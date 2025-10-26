@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title><!-- 1. TITLE --></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    :root{
+      --bg:#0a0a0a; --glass:rgba(20,20,30,.75);
+      --cyan:#00ffff; --pink:#ff006e;
+      --text:#fff; --sub:#b0b0b0;
+    }
+    body{margin:0;font:1rem/1.6 'Courier New',monospace;
+         background:var(--bg);color:var(--text);
+         background-image:linear-gradient(var(--cyan) 1px,transparent 1px),
+                          linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
+         background-size:30px 30px;}
+    a{color:var(--cyan);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header,section{padding:2rem max(1rem,50% - 600px)}
+    header{border-bottom:1px solid var(--cyan);margin-bottom:2rem}
+    h1{margin:.2em 0 .5em;font-size:2.2rem;
+       background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;
+       -webkit-text-fill-color:transparent;}
+    h2{margin:1.5em 0 .5em;font-size:1.4rem;color:var(--cyan)}
+    .pdf,.links,.gallery{background:var(--glass);border:1px solid rgba(255,255,255,.1);
+                          border-radius:8px;padding:1.5rem;margin:1.5rem 0}
+    .links ul{list-style:none;padding-left:0}
+    .links li{margin:.4em 0}
+    .gallery{display:flex;flex-wrap:wrap;gap:1rem}
+    .gallery img{max-width:240px;border:1px solid rgba(255,255,255,.15);border-radius:4px}
+    .btn{display:inline-block;margin-top:.5rem;padding:.6rem 1.2rem;border:1px solid var(--cyan);
+         border-radius:4px;transition:.2s}
+    .btn:hover{background:var(--cyan);color:var(--bg);text-decoration:none}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html">← Back to portfolio</a>
+  <h1><!-- 2. PROJECT TITLE --></h1>
+  <p><!-- 3. SHORT DESCRIPTION --></p>
+</header>
+
+<section id="docs" class="pdf">
+  <h2>Documentation</h2>
+  <p>Download the full project report (PDF).</p>
+  <a class="btn" href="assets/report.pdf" download>Download PDF</a>
+  <!-- drop the file in projects/assets/ and update the name -->
+</section>
+
+<section id="links" class="links">
+  <h2>Links & Resources</h2>
+  <ul>
+    <li><a href="https://github.com/YOU/REPO" target="_blank">Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">Demo video</a></li>
+    <!-- add more <li> as needed -->
+  </ul>
+</section>
+
+<section id="gallery" class="gallery">
+  <h2>Photos / Screenshots</h2>
+  <!-- 4. IMAGES – put them in projects/assets/img/ -->
+  <img src="assets/img/photo1.jpg" alt="caption 1"/>
+  <img src="assets/img/photo2.jpg" alt="caption 2"/>
+  <!-- add more <img> or even <video> tags -->
+</section>
+
+<footer style="text-align:center;padding:2rem 0;font-size:.9rem;color:var(--sub)">
+  &copy; 2024 John Doe – built for GitHub Pages
+</footer>
+
+</body>
+</html>

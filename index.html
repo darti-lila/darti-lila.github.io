@@ -58,36 +58,25 @@
         }
 
         /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            padding: 1rem 2rem;
-            transition: all 0.3s ease;
+        nav{
+            position:fixed;
+            top:0; left:0; width:100%;
+            background:rgba(10,10,10,.95);
+            border-bottom:1px solid #00ffff;
+            z-index:1000;
+            padding:1rem 2rem;
         }
 
         nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
+            list-style:none;
+            display:flex; justify-content:center; gap:2rem;
         }
 
         nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            color:#fff; text-decoration:none;
+            padding:.4rem .8rem;
+            font:1rem 'Courier New',monospace;
+            transition:color .2s;
         }
 
         nav a::before {
@@ -778,6 +767,14 @@
                 document.body.removeChild(trail);
             }, 300);
         });
+
+        document.querySelectorAll('.project-card').forEach(card=>{
+        card.style.cursor='pointer';
+        card.addEventListener('click',()=>{
+        location.href = card.dataset.url;   // url stored in data-url=""
+        });
+    });
+
     </script>
 </body>
 </html>
