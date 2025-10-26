@@ -5,184 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>John Doe | ECE Portfolio</title>
 
-  <!-- ======== 80s PCB + CRT COLOUR PALETTE ======== -->
+  <!-- ======== 8-BIT / PIXEL + CRT THEME ======== -->
   <style>
   :root{
-    --pcb-green:#1e2a0e;
+    --pcb:#1e2a0e;
     --copper:#b87333;
     --copper-lit:#ff9e4a;
-    --phosphor:#9cff57;
-    --phosphor-glow:#c3ff83;
-    --crt-dark:#0b1405;
-    --grid-dot:rgba(156,255,87,.06);
-    --scan:rgba(156,255,87,.12);
+    --pixel:#9cff57;
+    --pixel-dark:#6bcf38;
+    --crt:#0b1405;
+    --grid:rgba(156,255,87,.07);
+    --scan:rgba(156,255,87,.15);
     --text:#e3ffe3;
     --sub:#a0c38c;
+    font-size:16px; /* base for pixel scaling */
   }
-
-  /* ======== GLOBAL RESET ======== */
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0}
   body{
-    font:1rem/1.5 "Courier New",monospace;
-    background:var(--pcb-green);
+    background:var(--pcb) repeating-linear-gradient(0deg,transparent,transparent 2px,var(--grid) 2px,var(--grid) 4px);
     color:var(--text);
-    min-height:100vh;
+    font-family: 'Press Start 2P', cursive; /* classic 8-bit font */
+    line-height:1.6;
     overflow-x:hidden;
-    cursor:crosshair;
-    position:relative;
   }
+  /* Google font loader */
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-  /* subtle copper grid (PCB feel) */
-  body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-      radial-gradient(circle at 1px 1px,var(--grid-dot) 1px,transparent 0),
-      linear-gradient(45deg,transparent 48%,rgba(184,115,51,.03) 50%,transparent 52%);
-    background-size:20px 20px,120px 120px;
-    pointer-events:none;
-    z-index:-1;
-  }
-
-  /* CRT scan-lines */
+  /* CRT scanlines */
   body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scan) 2px,var(--scan) 3px);
-    pointer-events:none;
-    z-index:10000;
-    mix-blend-mode:multiply;
-    animation:flicker .15s infinite;
+    content:"";position:fixed;inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 3px,var(--scan) 3px,var(--scan) 4px);
+    pointer-events:none;z-index:10000;mix-blend-mode:screen;
+    animation:flicker .12s infinite;
   }
-  @keyframes flicker{0%,100%{opacity:.9}50%{opacity:.75}}
+  @keyframes flicker{0%,100%{opacity:.8}50%{opacity:.6}}
 
-  /* ======== MINIMAL NAV (no FX) ======== */
+  /* ======== PIXEL NAV ======== */
   nav{
-    position:fixed;
-    top:0;left:0;width:100%;
-    background:rgba(30,42,14,.95);
-    border-bottom:1px solid var(--copper-lit);
-    z-index:1000;
-    padding:1rem 2rem;
+    position:fixed;top:0;left:0;width:100%;
+    background:var(--crt);border-bottom:4px solid var(--copper-lit);
+    z-index:1000;padding:1rem 2rem;
   }
   nav ul{list-style:none;display:flex;justify-content:center;gap:2rem}
-  nav a{color:var(--text);text-decoration:none;padding:.4rem .8rem;transition:color .2s}
+  nav a{color:var(--pixel);font-size:.8rem;text-decoration:none}
   nav a:hover{color:var(--copper-lit)}
 
-  /* ======== HERO (rounded CRT screen) ======== */
+  /* ======== PIXEL HERO (centred block) ======== --> */
   .hero{
-    min-height:100vh;
-    display:flex;flex-direction:column;justify-content:center;align-items:center;
-    position:relative;
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
     padding:2rem;
-    background:var(--crt-dark);
-    border-radius:3rem;
-    margin:2rem;
+  }
+  .crt-box{
+    background:var(--crt);border:8px solid var(--copper);
+    border-radius:24px;padding:3rem 4rem;text-align:center;
     box-shadow:
-      inset 0 0 40px 10px rgba(0,0,0,.6),
-      0 0 0 6px var(--copper),
-      0 0 0 12px rgba(0,0,0,.8);
-    overflow:hidden;
+      inset 0 0 30px 6px rgba(0,0,0,.8),
+      0 0 0 4px rgba(0,0,0,.5),
+      0 0 40px rgba(156,255,87,.4);
+    position:relative;
+  }
+  .crt-box::after{ /* rounded screen glare */
+    content:"";position:absolute;inset:0;border-radius:24px;
+    background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.08),transparent 60%);
+    pointer-events:none;
   }
   .hero h1{
-    font-size:clamp(2.5rem,8vw,4rem);
-    letter-spacing:.1em;
-    color:var(--phosphor);
-    text-shadow:
-      0 0 4px var(--phosphor-glow),
-      0 0 12px var(--phosphor),
-      0 0 20px rgba(156,255,87,.7);
-    animation:text-glitch 2.5s infinite;
-  }
-  @keyframes text-glitch{
-    0%,100%{text-shadow:0 0 4px var(--phosphor-glow),0 0 12px var(--phosphor);}
-    25%{text-shadow:-2px 0 #ff9e4a,2px 0 var(--phosphor);}
-    50%{text-shadow:2px 0 #ff9e4a,-2px 0 var(--phosphor);}
-  }
-  .hero p{color:var(--sub);margin:1rem 0 2rem;font-size:1.3rem}
-  .cta-button{
-    padding:.8rem 2rem;
-    border:2px solid var(--copper);
-    background:transparent;
-    color:var(--copper-lit);
-    font-weight:bold;
+    font-size:2.2rem;color:var(--pixel);
+    text-shadow:0 0 6px var(--pixel-dark),0 0 12px var(--pixel);
+    margin-bottom:1rem;
     letter-spacing:2px;
-    text-transform:uppercase;
-    border-radius:4px;
-    transition:all .3s;
   }
-  .cta-button:hover{background:var(--copper);color:var(--pcb-dark);box-shadow:0 0 20px var(--copper-lit)}
-
-  /* ======== SECTIONS ======== */
-  section{padding:5rem 2rem;max-width:1200px;margin:auto}
-  .section-title{
-    font-size:clamp(2rem,5vw,3rem);
-    text-align:center;
-    margin-bottom:3rem;
-    color:var(--phosphor);
-    text-shadow:0 0 8px var(--phosphor-glow);
-    letter-spacing:1px;
+  .hero p{font-size:1rem;color:var(--sub);margin-bottom:2rem}
+  .pixel-btn{
+    display:inline-block;padding:.8rem 1.6rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.9rem;text-transform:uppercase;letter-spacing:2px;
+    border:none;box-shadow:0 4px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
   }
+  .pixel-btn:active{transform:translateY(4px);box-shadow:none}
 
-  /* ======== PROJECT CARDS (clickable) ======== */
+  /* ======== SECTIONS ======== --> */
+  section{padding:5rem 2rem;max-width:1000px;margin:auto}
+  .section-title{font-size:1.6rem;color:var(--pixel);text-align:center;margin-bottom:3rem;letter-spacing:2px}
+
+  /* ======== PIXEL PROJECT CARDS ======== --> */
   .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem}
   .project-card{
-    background:rgba(11,20,5,.7);
-    border:1px solid var(--copper);
-    border-radius:6px;
-    padding:1.8rem;
-    position:relative;
-    cursor:pointer;
-    transition:transform .3s,box-shadow .3s;
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:1.5rem;
+    cursor:pointer;transition:all .2s;
   }
-  .project-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 0 20px var(--copper-lit),0 0 8px var(--phosphor) inset;
-    border-color:var(--copper-lit);
-  }
-  .project-card h3{color:var(--phosphor);margin-bottom:.8rem;font-size:1.3rem}
-  .project-card p{color:var(--sub);margin-bottom:1rem}
+  .project-card:hover{border-color:var(--pixel);box-shadow:0 0 16px var(--pixel)}
+  .project-card h3{font-size:1rem;color:var(--pixel);margin-bottom:.8rem}
+  .project-card p{font-size:.75rem;color:var(--sub);margin-bottom:1rem}
   .tag{
-    display:inline-block;
-    padding:.3rem .7rem;
-    margin:.2rem .3rem .2rem 0;
-    font-size:.75rem;
-    border:1px solid var(--phosphor);
-    color:var(--phosphor);
-    border-radius:3px;
+    display:inline-block;padding:.2rem .5rem;margin:.2rem .3rem .2rem 0;
+    font-size:.6rem;border:2px solid var(--pixel);color:var(--pixel);
   }
 
-  /* ======== ABOUT / CONTACT ======== */
+  /* ======== ABOUT / CONTACT ======== --> */
   .about-content{display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center}
   .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
-  .skill-bar{background:rgba(0,0,0,.4);height:28px;border-radius:4px;overflow:hidden;border:1px solid var(--copper)}
-  .skill-fill{height:100%;background:linear-gradient(90deg,var(--copper),var(--phosphor));padding-left:1rem;font-size:.8rem;display:flex;align-items:center;color:#000}
+  .skill-bar{background:rgba(0,0,0,.4);height:24px;border:2px solid var(--copper);border-radius:4px;overflow:hidden}
+  .skill-fill{height:100%;background:var(--pixel);font-size:.6rem;display:flex;align-items:center;padding-left:.5rem;color:#000}
 
-  .contact-form{display:flex;flex-direction:gap:1.5rem;max-width:600px;margin:auto}
-  .contact-form input,.contact-form textarea{width:100%;padding:1rem;margin-bottom:1rem;background:rgba(0,0,0,.3);border:1px solid var(--copper);color:var(--text);border-radius:4px}
-  .contact-form button{padding:1rem 2rem;background:transparent;border:2px solid var(--phosphor);color:var(--phosphor);border-radius:4px;font-weight:bold;cursor:pointer;transition:all .3s}
-  .contact-form button:hover{background:var(--phosphor);color:var(--pcb-dark);box-shadow:0 0 20px var(--phosphor-glow)}
+  .contact-form{max-width:600px;margin:auto;display:flex;flex-direction:column;gap:1rem}
+  .contact-form input,.contact-form textarea{width:100%;padding:1rem;background:rgba(0,0,0,.3);border:2px solid var(--copper);color:var(--text);font-family:inherit;font-size:.8rem;border-radius:4px}
+  .contact-form button{font-family:inherit;font-size:.9rem;padding:1rem;background:var(--pixel);color:var(--crt);border:none;box-shadow:0 4px 0 var(--pixel-dark);cursor:pointer}
+  .contact-form button:active{transform:translateY(4px);box-shadow:none}
 
-  footer{text-align:center;padding:2rem 0;color:var(--sub);font-size:.9rem}
+  footer{text-align:center;padding:2rem 0;font-size:.7rem;color:var(--sub)}
   .social-links{display:flex;justify-content:center;gap:2rem;margin-top:1rem}
-  .social-links a{color:var(--text);font-size:1.5rem;transition:color .3s}
-  .social-links a:hover{color:var(--phosphor-glow)}
+  .social-links a{color:var(--pixel);font-size:1.2rem}
 
-  /* ======== SCROLLBAR ======== */
-  ::-webkit-scrollbar{width:10px}
-  ::-webkit-scrollbar-track{background:var(--pcb-green)}
-  ::-webkit-scrollbar-thumb{background:var(--copper);border-radius:4px}
-  ::-webkit-scrollbar-thumb:hover{background:var(--copper-lit)}
-
-  /* ======== RESPONSIVE ======== */
   @media(max-width:768px){.about-content{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
-<!-- ======== MINIMAL NAV ======== -->
+<!-- ======== 8-BIT NAV ======== -->
 <nav>
   <ul>
     <li><a href="#home">Home</a></li>
@@ -193,37 +135,38 @@
   </ul>
 </nav>
 
-<!-- ======== HERO ======== -->
+<!-- ======== CENTRED PIXEL HERO ======== -->
 <section id="home" class="hero">
-  <h1>John Doe</h1>
-  <p>Electrical & Computer Engineering Student</p>
-  <a href="#electrical" class="cta-button">View My Work</a>
+  <div class="crt-box">
+    <h1>John Doe</h1>
+    <p>Electrical &amp; Computer<br>Engineering Student</p>
+    <a href="#electrical" class="pixel-btn">View My Work</a>
+  </div>
 </section>
 
 <!-- ======== ELECTRICAL PROJECTS ======== -->
 <section id="electrical">
-  <h2 class="section-title">Electrical Engineering Projects</h2>
+  <h2 class="section-title">Electrical Projects</h2>
   <div class="project-grid">
-    <!-- every card now carries data-url -->
     <div class="project-card" data-url="projects/drone-nav.html">
-      <h3>Autonomous Drone Navigation</h3>
-      <p>LiDAR + STM32 obstacle-avoidance system.</p>
-      <div class="tags"><span class="tag">STM32</span><span class="tag">LiDAR</span><span class="tag">PID</span><span class="tag">C++</span></div>
+      <h3>Autonomous Drone</h3>
+      <p>LiDAR + STM32 obstacle avoidance.</p>
+      <div class="tags"><span class="tag">STM32</span><span class="tag">LiDAR</span><span class="tag">PID</span></div>
     </div>
     <div class="project-card" data-url="projects/power-grid.html">
-      <h3>Smart Power Grid Monitor</h3>
-      <p>IoT energy-tracking board with Raspberry Pi.</p>
-      <div class="tags"><span class="tag">IoT</span><span class="tag">Raspberry Pi</span><span class="tag">Python</span><span class="tag">MQTT</span></div>
+      <h3>Smart Power Monitor</h3>
+      <p>IoT energy tracking with Pi.</p>
+      <div class="tags"><span class="tag">Pi</span><span class="tag">MQTT</span><span class="tag">Python</span></div>
     </div>
     <div class="project-card" data-url="projects/dsp-board.html">
       <h3>Custom DSP Board</h3>
-      <p>Real-time audio FIR/IIR + FFT on FPGA.</p>
-      <div class="tags"><span class="tag">DSP</span><span class="tag">FPGA</span><span class="tag">Verilog</span><span class="tag">Audio</span></div>
+      <p>Real-time audio FIR/IIR + FFT.</p>
+      <div class="tags"><span class="tag">FPGA</span><span class="tag">Verilog</span><span class="tag">Audio</span></div>
     </div>
     <div class="project-card" data-url="projects/solar-tracker.html">
-      <h3>Solar Tracking System</h3>
-      <p>Light-sensor servo rig for max efficiency.</p>
-      <div class="tags"><span class="tag">Arduino</span><span class="tag">Solar</span><span class="tag">Control</span><span class="tag">CAD</span></div>
+      <h3>Solar Tracker</h3>
+      <p>Light-sensor servo rig.</p>
+      <div class="tags"><span class="tag">Arduino</span><span class="tag">Solar</span><span class="tag">CAD</span></div>
     </div>
   </div>
 </section>
@@ -233,24 +176,24 @@
   <h2 class="section-title">Programming Projects</h2>
   <div class="project-grid">
     <div class="project-card" data-url="projects/nn-cuda.html">
-      <h3>Neural Network Accelerator</h3>
-      <p>CUDA-based GPU ML framework from scratch.</p>
-      <div class="tags"><span class="tag">CUDA</span><span class="tag">C++</span><span class="tag">GPU</span><span class="tag">Deep Learning</span></div>
+      <h3>Neural Accelerator</h3>
+      <p>CUDA-based GPU ML framework.</p>
+      <div class="tags"><span class="tag">CUDA</span><span class="tag">C++</span><span class="tag">GPU</span></div>
     </div>
     <div class="project-card" data-url="projects/cyber-tool.html">
-      <h3>Cybersecurity Analysis Tool</h3>
+      <h3>Cyber Analysis Tool</h3>
       <p>ML packet-sniffer & threat detector.</p>
-      <div class="tags"><span class="tag">Python</span><span class="tag">ML</span><span class="tag">Wireshark</span><span class="tag">Security</span></div>
+      <div class="tags"><span class="tag">Python</span><span class="tag">ML</span><span class="tag">Wireshark</span></div>
     </div>
     <div class="project-card" data-url="projects/blockchain-vote.html">
-      <h3>Blockchain Voting System</h3>
+      <h3>Blockchain Voting</h3>
       <p>Ethereum smart-contract elections.</p>
-      <div class="tags"><span class="tag">Solidity</span><span class="tag">Web3.js</span><span class="tag">React</span><span class="tag">Ethereum</span></div>
+      <div class="tags"><span class="tag">Solidity</span><span class="tag">Web3</span><span class="tag">React</span></div>
     </div>
     <div class="project-card" data-url="projects/cv-robot.html">
-      <h3>Computer-Vision Robot Arm</h3>
-      <p>OpenCV real-time pick-&-place.</p>
-      <div class="tags"><span class="tag">OpenCV</span><span class="tag">ROS</span><span class="tag">Python</span><span class="tag">Robotics</span></div>
+      <h3>CV Robot Arm</h3>
+      <p>OpenCV pick-&-place in real time.</p>
+      <div class="tags"><span class="tag">OpenCV</span><span class="tag">ROS</span><span class="tag">Python</span></div>
     </div>
   </div>
 </section>
@@ -260,17 +203,15 @@
   <h2 class="section-title">About Me</h2>
   <div class="about-content">
     <div>
-      <p>I thrive on interdisciplinary challenges—bridging embedded hardware and modern software to build cool, reliable things.</p>
+      <p>I love mixing hardware & software to build reliable, shiny things. Constantly learning, soldering, coding.</p>
     </div>
     <div>
-      <h3>Technical Skills</h3>
+      <h3 style="font-size:1rem;margin-bottom:1rem;">Skills</h3>
       <div class="skills-grid">
         <div class="skill-bar"><div class="skill-fill" style="width:90%">C/C++ 90%</div></div>
         <div class="skill-bar"><div class="skill-fill" style="width:85%">Python 85%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:80%">Verilog/VHDL 80%</div></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:80%">Verilog 80%</div></div>
         <div class="skill-bar"><div class="skill-fill" style="width:75%">Embedded 75%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:70%">ML 70%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:85%">PCB 85%</div></div>
       </div>
     </div>
   </div>
@@ -278,12 +219,12 @@
 
 <!-- ======== CONTACT ======== -->
 <section id="contact">
-  <h2 class="section-title">Get In Touch</h2>
-  <form class="contact-form" onsubmit="alert('Message sent (demo)');return false;">
+  <h2 class="section-title">Contact</h2>
+  <form class="contact-form" onsubmit="alert('Sent (demo)');return false;">
     <input type="text" placeholder="Your Name" required>
     <input type="email" placeholder="Your Email" required>
-    <textarea placeholder="Your Message" rows="5" required></textarea>
-    <button type="submit">Send Message</button>
+    <textarea placeholder="Message" rows="5" required></textarea>
+    <button type="submit" class="pixel-btn">Send</button>
   </form>
 </section>
 
@@ -297,19 +238,19 @@
   </div>
 </footer>
 
-<!-- ======== CLICKABLE CARDS + minor FX ======== -->
+<!-- ======== CLICKABLE CARDS + tiny CRT roll ======== -->
 <script>
-/* ---- make cards linkable ---- */
-document.querySelectorAll('.project-card').forEach(card=>{
-  card.style.cursor='pointer';
-  card.addEventListener('click',()=> location.href= card.dataset.url );
+/* make cards link to project pages */
+document.querySelectorAll('.project-card').forEach(c=>{
+  c.style.cursor='pointer';
+  c.addEventListener('click',()=> location.href= c.dataset.url );
 });
-/* ---- scan-line twitch ---- */
-const scan=document.createElement('div');
-scan.style.cssText=`position:fixed;top:0;left:0;width:100%;height:2px;background:var(--phosphor);opacity:.6;pointer-events:none;z-index:10001;mix-blend-mode:screen`;
-document.body.appendChild(scan);
-let y=0,dir=1;
-setInterval(()=>{ y+=dir*15; if(y>window.innerHeight||y<0)dir*=-1; scan.style.transform=`translateY(${y}px)`; },60);
+/* optional rolling scan */
+const roll=document.createElement('div');
+roll.style.cssText=`position:fixed;left:0;width:100%;height:2px;background:var(--pixel);opacity:.7;pointer-events:none;z-index:10001`;
+document.body.appendChild(roll);
+let y=0,dy=2;
+setInterval(()=>{ y+=dy; if(y>innerHeight||y<0)dy*=-1; roll.style.top=y+'px'; },40);
 </script>
 </body>
 </html>
