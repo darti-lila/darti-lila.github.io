@@ -155,8 +155,8 @@
     </div>
     <div class="project-card" data-url="projects/pulse.html">
       <h3>Pulse</h3>
-      <p>IoT energy tracking with Pi.</p>
-      <div class="tags"><span class="tag">Pi</span><span class="tag">MQTT</span><span class="tag">Python</span></div>
+      <p>Vitals check ESP32 based IoT</p>
+      <div class="tags"><span class="tag">ESP32</span><span class="tag">Vitals Sensors</span><span class="tag">Python</span></div>
     </div>
     <div class="project-card" data-url="projects/smart-sorter.html">
       <h3>Smart Sorter</h3>
@@ -227,12 +227,9 @@
       <p>I love mixing hardware & software to build reliable, shiny things. Constantly learning, soldering, coding.</p>
     </div>
     <div>
-      <h3 style="font-size:1rem;margin-bottom:1rem;">Skills</h3>
-      <div class="skills-grid">
-        <div class="skill-bar"><div class="skill-fill" style="width:90%">C/C++ 90%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:85%">Python 85%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:80%">Verilog 80%</div></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:75%">Embedded 75%</div></div>
+      <h3 style="font-size:1rem;margin-bottom:1rem;">Skills (from projects)</h3>
+      <div class="skills-grid" id="skills-container">
+        <!-- Skills generated dynamically from project tags -->
       </div>
     </div>
   </div>
@@ -259,19 +256,55 @@
   </div>
 </footer>
 
-<!-- ======== CLICKABLE CARDS + tiny CRT roll ======== -->
+<!-- ======== DYNAMIC SKILLS GENERATION + CLICKABLE CARDS + CRT ROLL ======== -->
 <script>
-/* make cards link to project pages */
-document.querySelectorAll('.project-card').forEach(c=>{
-  c.style.cursor='pointer';
-  c.addEventListener('click',()=> location.href= c.dataset.url );
+/* ===== GENERATE SKILLS FROM PROJECT TAGS ===== */
+function generateSkills() {
+  
+  const tagCount = {};
+  
+  
+  document.querySelectorAll('.tag').forEach(tag => {
+    const skill = tag.textContent.trim();
+    tagCount[skill] = (tagCount[skill] || 0) + 1;
+  });
+  
+  // Sort by count (descending) and get top skills
+  const sortedSkills = Object.entries(tagCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8); // Show top 8 skills
+  
+  // Find max count for percentage calculation
+  const maxCount = sortedSkills[0]?.[1] || 1;
+  
+  // Generate skill bars
+  const container = document.getElementById('skills-container');
+  container.innerHTML = '';
+  
+  sortedSkills.forEach(([skill, count]) => {
+
+    const percentage = Math.round((count / maxCount) * 90) + 10;
+    
+    const skillBar = document.createElement('div');
+    skillBar.className = 'skill-bar';
+    skillBar.innerHTML = `
+      <div class="skill-fill" style="width:${percentage}%">
+        ${skill} ${percentage}%
+      </div>
+    `;
+    container.appendChild(skillBar);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', generateSkills);
+
+/* ===== CLICKABLE CARDS ===== */
+document.querySelectorAll('.project-card').forEach(c => {
+  c.style.cursor = 'pointer';
+  c.addEventListener('click', () => location.href = c.dataset.url);
 });
-/* optional rolling scan */
-const roll=document.createElement('div');
-roll.style.cssText=`position:fixed;left:0;width:100%;height:2px;background:var(--pixel);opacity:.7;pointer-events:none;z-index:10001`;
-document.body.appendChild(roll);
-let y=0,dy=2;
-setInterval(()=>{ y+=dy; if(y>innerHeight||y<0)dy*=-1; roll.style.top=y+'px'; },40);
+
+
 </script>
 </body>
 </html>
