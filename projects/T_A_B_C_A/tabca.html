@@ -36,6 +36,9 @@
     --sub:#558b2f;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{
+    scroll-behavior:smooth;
+  }
   body{
     background:var(--pcb) repeating-linear-gradient(0deg,transparent,transparent 2px,var(--grid) 2px,var(--grid) 4px);
     color:var(--text);
@@ -52,15 +55,27 @@
   }
   @keyframes flicker{0%,100%{opacity:.8}50%{opacity:.6}}
 
-  /* ======== PIXEL NAV ======== */
+  /* ======== PIXEL NAV - PROJECT SPECIFIC ======== */
   nav{
     position:fixed;top:0;left:0;width:100%;
     background:var(--crt);border-bottom:4px solid var(--copper-lit);
     z-index:1000;padding:1rem 2rem;
     display:flex;justify-content:space-between;align-items:center;
   }
-  nav ul{list-style:none;display:flex;justify-content:center;gap:2rem;flex:1}
-  nav a{color:var(--pixel);font-size:.8rem;text-decoration:none}
+  nav ul{
+    list-style:none;
+    display:flex;
+    justify-content:center;
+    gap:1.5rem;
+    flex:1;
+    flex-wrap:wrap;
+  }
+  nav a{
+    color:var(--pixel);
+    font-size:.75rem;
+    text-decoration:none;
+    transition:color .2s;
+  }
   nav a:hover{color:var(--copper-lit)}
   
   /* Theme toggle button */
@@ -74,7 +89,7 @@
   .theme-toggle:active{transform:translateY(3px);box-shadow:none}
   .theme-toggle:hover{background:var(--copper-lit);box-shadow:0 3px 0 var(--copper)}
 
-  /* ======== PIXEL HEADER (project title inside CRT) ======== -->*/
+  /* ======== PIXEL HEADER (project title inside CRT) ======== */
   header{
     min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
     padding:6rem 2rem 2rem;
@@ -93,8 +108,8 @@
   header h1{font-size:1.8rem;color:var(--pixel);text-shadow:0 0 6px var(--pixel-dark),0 0 12px var(--pixel);margin-bottom:1rem;letter-spacing:2px}
   header p{font-size:.8rem;color:var(--sub)}
 
-  /* ======== SECTIONS ======== -->*/
-  section{padding:3rem 2rem;max-width:900px;margin:auto}
+  /* ======== SECTIONS ======== */
+  section{padding:3rem 2rem;max-width:1100px;margin:auto}
   h2{font-size:1.2rem;color:var(--pixel);margin-bottom:1rem;letter-spacing:2px}
   .pixel-btn{
     display:inline-block;padding:.8rem 1.6rem;
@@ -105,24 +120,53 @@
     text-decoration:none;
   }
   .pixel-btn:active{transform:translateY(4px);box-shadow:none}
+  .pixel-btn:hover{background:var(--copper-lit);box-shadow:0 4px 0 var(--copper)}
 
-  /* ======== PDF / LINKS / PICTURES ======== -->*/
+  /* ======== DESCRIPTION SECTION ======== */
+  .description-content{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:2rem;
+    line-height:1.8;
+  }
+  .description-content p{
+    margin-bottom:1rem;
+    font-size:.85rem;
+  }
+  .description-content ul{
+    margin-left:2rem;
+    margin-bottom:1rem;
+  }
+  .description-content li{
+    margin-bottom:.5rem;
+    font-size:.85rem;
+  }
+
+  /* ======== PDF / LINKS / PICTURES ======== */
   .block{background:var(--crt);border:4px solid var(--copper);border-radius:8px;padding:1.5rem;margin:2rem 0}
   .links ul{list-style:none;padding-left:0}
-  .links li{margin:.6rem 0}
-  .gallery{display:flex;flex-wrap:wrap;gap:1rem}
-  .gallery img{image-rendering:pixelated;border:4px solid var(--copper);border-radius:4px;max-width:240px}
+  .links li{margin:.8rem 0}
+  .links a{color:var(--pixel);text-decoration:none;font-size:.85rem;transition:color .2s}
+  .links a:hover{color:var(--copper-lit)}
+  .gallery{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+  .gallery img{image-rendering:pixelated;border:4px solid var(--copper);border-radius:4px;max-width:240px;transition:transform .2s}
+  .gallery img:hover{transform:scale(1.05)}
   
-  /* ======== PDF VIEWER ======== */
+  /* ======== PDF VIEWER - PROPERLY CENTERED ======== */
   .pdf-controls{
     display:flex;gap:1rem;align-items:center;justify-content:center;
     flex-wrap:wrap;margin-bottom:1rem;
   }
   .pdf-viewer-container{
-    background:var(--crt);border:4px solid var(--copper);
-    border-radius:8px;padding:1rem;
-    max-height:600px;overflow-y:auto;
+    background:var(--crt);
+    border:4px solid var(--copper);
+    border-radius:8px;
+    padding:1.5rem;
+    max-height:700px;
+    overflow-y:auto;
     box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
   }
   .pdf-canvas-wrapper{
     display:flex;
@@ -136,6 +180,7 @@
     box-shadow:0 0 10px rgba(156,255,87,.3);
     max-width:100%;
     height:auto;
+    margin:0 auto;
   }
   .page-info{
     text-align:center;color:var(--pixel);
@@ -160,12 +205,14 @@
     background:var(--copper-lit);
   }
   
-  /* ======== CODE VIEWER ======== */
+  /* ======== CODE VIEWER - COMPACT WINDOW ======== */
   .code-viewer-container{
     background:var(--crt);border:4px solid var(--copper);
     border-radius:8px;overflow:hidden;
     box-shadow:inset 0 0 20px rgba(0,0,0,.5);
-    max-height:600px;
+    max-height:500px;
+    max-width:900px;
+    margin:0 auto;
     display:flex;
     flex-direction:column;
   }
@@ -188,8 +235,10 @@
     font-size:.6rem;text-transform:uppercase;
     border:none;box-shadow:0 2px 0 var(--pixel-dark);
     cursor:pointer;font-family:inherit;
+    transition:all .1s;
   }
   .code-copy-btn:active{transform:translateY(2px);box-shadow:none}
+  .code-copy-btn:hover{background:var(--copper-lit)}
   .code-nav-btn{
     padding:.6rem 1.2rem;
     background:var(--pixel);color:var(--crt);
@@ -229,11 +278,13 @@
     display:block;
   }
   
-  /* ======== VIDEO PLAYER ======== */
+  /* ======== VIDEO PLAYER - COMPACT WINDOW ======== */
   .video-container{
     background:var(--crt);border:4px solid var(--copper);
     border-radius:8px;padding:1rem;
     box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    max-width:800px;
+    margin:0 auto;
   }
   .video-controls{
     display:flex;gap:1rem;align-items:center;justify-content:center;
@@ -274,21 +325,56 @@
     background:#000;
   }
   
+  /* ======== CUSTOM SCROLLBAR (like index) ======== */
+  ::-webkit-scrollbar{
+    height:12px;
+    width:12px;
+  }
+  ::-webkit-scrollbar-track{
+    background:var(--crt);
+    border:2px solid var(--copper);
+  }
+  ::-webkit-scrollbar-thumb{
+    background:var(--pixel);
+    border:2px solid var(--copper);
+    border-radius:4px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background:var(--copper-lit);
+  }
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--pixel) var(--crt);
+  }
+  
   footer{text-align:center;padding:2rem 0;font-size:.6rem;color:var(--sub)}
+  
+  /* ======== RESPONSIVE ======== */
+  @media(max-width:768px){
+    nav{padding:.8rem 1rem}
+    nav ul{gap:1rem;font-size:.65rem}
+    header h1{font-size:1.4rem}
+    .crt-box{padding:2rem}
+    h2{font-size:1rem}
+    section{padding:2rem 1rem}
+  }
   </style>
 </head>
 
 <body>
-<!-- ======== PIXEL NAV ======== -->
+<!-- ======== PIXEL NAV - PROJECT NAVIGATION ======== -->
 <nav>
   <ul>
     <li><a href="../index.html">Home</a></li>
-    <li><a href="../index.html#electrical">Electrical</a></li>
-    <li><a href="../index.html#programming">Programming</a></li>
-    <li><a href="../index.html#about">About</a></li>
-    <li><a href="../index.html#contact">Contact</a></li>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#docs">Documentation</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#video">Videos</a></li>
+    <li><a href="#links">Links</a></li>
+    <li><a href="#gallery">Gallery</a></li>
   </ul>
-  <button class="theme-toggle" id="theme-toggle">🌙</button>
+  <button class="theme-toggle" id="theme-toggle">Light</button>
 </nav>
 
 <!-- ======== PROJECT TITLE HEADER ======== -->
@@ -301,9 +387,35 @@
   </div>
 </header>
 
+<!-- ======== DESCRIPTION SECTION ======== -->
+<section id="description">
+  <h2>📝 Project Description</h2>
+  <div class="description-content">
+    <!-- ======== EDIT: ADD YOUR PROJECT DESCRIPTION ======== -->
+    <p>
+      The Temperature AND Barometric Calculation Assistant (T.A.B.C.A) is an advanced environmental monitoring system 
+      designed to provide real-time atmospheric data collection and analysis.
+    </p>
+    <p>
+      <strong>Key Features:</strong>
+    </p>
+    <ul>
+      <li>Real-time temperature monitoring with ±0.1°C accuracy</li>
+      <li>Barometric pressure sensing for weather prediction</li>
+      <li>Data logging capabilities with timestamp tracking</li>
+      <li>User-friendly interface with visual feedback</li>
+      <li>Low power consumption design</li>
+    </ul>
+    <p>
+      This project demonstrates the integration of environmental sensors with microcontroller systems 
+      to create a practical and educational tool for weather monitoring.
+    </p>
+  </div>
+</section>
+
 <!-- ======== DOCUMENTATION WITH PDF VIEWER ======== -->
 <section id="docs" class="block">
-  <h2>Documentation</h2>
+  <h2>📄 Documentation</h2>
   <p style="margin-bottom:1rem;">View the full report below or download it.</p>
   
   <!-- PDF Controls -->
@@ -314,7 +426,7 @@
     </span>
     <button class="pdf-btn" id="next-page">Next ▶</button>
     <!-- ======== EDIT 4: PDF PATH ======== -->
-    <a class="pixel-btn" href="assets/T_A_B_C_A.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
+    <a class="pixel-btn" href="T_A_B_C_A.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
   </div>
   
   <!-- PDF Viewer -->
@@ -325,20 +437,9 @@
   </div>
 </section>
 
-<!-- ======== LINKS ======== -->
-<section id="links" class="block links">
-  <h2>Links & Resources</h2>
-  <ul>
-    <!-- ======== EDIT 5: YOUR LINKS ======== -->
-    <li><a href="https://github.com/YOU/REPO" target="_blank">📂 Source code (GitHub)</a></li>
-    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎥 Demo video</a></li>
-    <!-- add more <li> lines here -->
-  </ul>
-</section>
-
 <!-- ======== CODE VIEWER ======== -->
-<!--<section id="code" class="block" style="display:none;"> -->
-  <h2>Source Code</h2>
+<section id="code" class="block">
+  <h2>💻 Source Code</h2>
   <p style="margin-bottom:1rem;">Browse through the project code files.</p>
   
   <!-- Code Navigation Controls -->
@@ -357,7 +458,7 @@
 </section>
 
 <!-- ======== VIDEO PLAYER ======== -->
-<!--<section id="video" class="block" style="display:none;" -->
+<section id="video" class="block">
   <h2>Demo Videos</h2>
   <p style="margin-bottom:1rem;">Watch the project demonstrations.</p>
   
@@ -378,9 +479,22 @@
   </div>
 </section>
 
+<!-- ======== LINKS ======== -->
+<section id="links" class="block links">
+  <h2>🔗 Links & Resources</h2>
+  <ul>
+    <!-- ======== EDIT 5: YOUR LINKS ======== -->
+    <li><a href="https://github.com/YOU/REPO" target="_blank">📂 Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎥 Demo video (YouTube)</a></li>
+    <li><a href="#" target="_blank">📊 Technical specifications</a></li>
+    <li><a href="#" target="_blank">📚 Additional resources</a></li>
+    <!-- add more <li> lines here -->
+  </ul>
+</section>
+
 <!-- ======== PICTURES ======== -->
 <section id="gallery" class="block">
-  <h2>Photos / Screenshots</h2>
+  <h2>📷 Photos / Screenshots</h2>
   <div class="gallery">
     <!-- ======== EDIT 6: IMAGE PATHS ======== -->
     <img src="assets/img/photo1.png" alt="caption 1">
@@ -426,9 +540,9 @@ function initThemeToggle() {
   
   function updateToggleButton(theme) {
     if (theme === 'dark') {
-      toggleBtn.innerHTML = 'Light';
+      toggleBtn.textContent = 'Light';
     } else {
-      toggleBtn.innerHTML = 'Dark';
+      toggleBtn.textContent = 'Dark';
     }
   }
 }
