@@ -21,6 +21,20 @@
     --sub:#a0c38c;
     font-size:16px;
   }
+  
+  /* Light mode theme - warm beige/cream with forest greens */
+  [data-theme="light"]{
+    --pcb:#f5f1e8;
+    --copper:#8d6e63;
+    --copper-lit:#d84315;
+    --pixel:#2e7d32;
+    --pixel-dark:#1b5e20;
+    --crt:#faf8f3;
+    --grid:rgba(46,125,50,.05);
+    --scan:rgba(46,125,50,.08);
+    --text:#2d4a2b;
+    --sub:#558b2f;
+  }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{
     background:var(--pcb) repeating-linear-gradient(0deg,transparent,transparent 2px,var(--grid) 2px,var(--grid) 4px);
@@ -43,10 +57,22 @@
     position:fixed;top:0;left:0;width:100%;
     background:var(--crt);border-bottom:4px solid var(--copper-lit);
     z-index:1000;padding:1rem 2rem;
+    display:flex;justify-content:space-between;align-items:center;
   }
-  nav ul{list-style:none;display:flex;justify-content:center;gap:2rem}
+  nav ul{list-style:none;display:flex;justify-content:center;gap:2rem;flex:1}
   nav a{color:var(--pixel);font-size:.8rem;text-decoration:none}
   nav a:hover{color:var(--copper-lit)}
+  
+  /* Theme toggle button */
+  .theme-toggle{
+    background:var(--pixel);color:var(--crt);
+    border:none;padding:.5rem .8rem;
+    font-family:inherit;font-size:.7rem;
+    cursor:pointer;box-shadow:0 3px 0 var(--pixel-dark);
+    transition:all .1s;
+  }
+  .theme-toggle:active{transform:translateY(3px);box-shadow:none}
+  .theme-toggle:hover{background:var(--copper-lit);box-shadow:0 3px 0 var(--copper)}
 
   /* ======== PIXEL HEADER (project title inside CRT) ======== -->*/
   header{
@@ -97,9 +123,12 @@
     border-radius:8px;padding:1rem;
     max-height:600px;overflow-y:auto;
     box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
   }
   #pdf-canvas{
-    display:block;margin:0 auto;
+    display:block;
     border:2px solid var(--pixel);
     box-shadow:0 0 10px rgba(156,255,87,.3);
     max-width:100%;
@@ -122,6 +151,7 @@
   .pdf-btn:disabled{
     background:var(--sub);cursor:not-allowed;
     box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
   }
   .pdf-btn:hover:not(:disabled){
     background:var(--copper-lit);
@@ -141,6 +171,7 @@
     <li><a href="../index.html#about">About</a></li>
     <li><a href="../index.html#contact">Contact</a></li>
   </ul>
+  <button class="theme-toggle" id="theme-toggle">🌙</button>
 </nav>
 
 <!-- ======== PROJECT TITLE HEADER ======== -->
@@ -292,6 +323,38 @@ function updateButtons() {
 // Event listeners
 document.getElementById('prev-page').addEventListener('click', onPrevPage);
 document.getElementById('next-page').addEventListener('click', onNextPage);
+
+/* ===== THEME TOGGLE ===== */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  
+  // Check for saved theme preference or default to 'dark'
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', currentTheme);
+  updateToggleButton(currentTheme);
+  
+  // Toggle theme on button click
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleButton(newTheme);
+  });
+  
+  function updateToggleButton(theme) {
+    if (theme === 'dark') {
+      toggleBtn.innerHTML = '☀️';
+    } else {
+      toggleBtn.innerHTML = '🌙';
+    }
+  }
+}
+
+// Initialize theme toggle
+initThemeToggle();
 </script>
 </body>
 </html>
