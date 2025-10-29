@@ -186,15 +186,15 @@
     display:inline-block;
   }
   .links a:hover{color:var(--copper-lit)}
-  .gallery{
-    display:flex;
-    flex-wrap:wrap;
-    gap:1rem;
-    justify-content:center;
-    max-width:900px;
-    margin:0 auto;
+  .gallery img{
+    image-rendering:pixelated;
+    border:4px solid var(--copper);
+    border-radius:4px;
+    width:240px;
+    height:240px;
+    object-fit:cover;
+    transition:transform .2s;
   }
-  .gallery img{image-rendering:pixelated;border:4px solid var(--copper);border-radius:4px;max-width:240px;transition:transform .2s}
   .gallery img:hover{transform:scale(1.05)}
   
   /* ======== PDF VIEWER - PROPERLY CENTERED ======== */
