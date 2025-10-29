@@ -10,7 +10,7 @@ const videos = [
   {
     title: 'Tabca First Test Drive',
     type: 'local',
-    source: 'projects/T_A_B_C_A/videos/TABCA Movement Test.mp4'  // Relative path from project folder
+    source: 'videos/TABCA Movement Test.mp4'  // Relative path from project folder
   },
 ];
 
