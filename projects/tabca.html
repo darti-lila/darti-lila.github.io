@@ -76,8 +76,8 @@
 
   /* ======== PIXEL HEADER (project title inside CRT) ======== -->*/
   header{
-    min-height:40vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-    padding:2rem;
+    min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    padding:6rem 2rem 2rem;
   }
   .crt-box{
     background:var(--crt);border:8px solid var(--copper);
@@ -123,9 +123,12 @@
     border-radius:8px;padding:1rem;
     max-height:600px;overflow-y:auto;
     box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+  }
+  .pdf-canvas-wrapper{
     display:flex;
     justify-content:center;
     align-items:center;
+    width:100%;
   }
   #pdf-canvas{
     display:block;
@@ -155,6 +158,110 @@
   }
   .pdf-btn:hover:not(:disabled){
     background:var(--copper-lit);
+  }
+  
+  /* ======== CODE VIEWER ======== */
+  .code-viewer-container{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;overflow:hidden;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+  }
+  .code-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .code-header{
+    background:rgba(0,0,0,.3);padding:.8rem 1rem;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--copper);
+  }
+  .code-filename{
+    color:var(--pixel);font-size:.7rem;
+  }
+  .code-copy-btn{
+    padding:.4rem .8rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.6rem;text-transform:uppercase;
+    border:none;box-shadow:0 2px 0 var(--pixel-dark);
+    cursor:pointer;font-family:inherit;
+  }
+  .code-copy-btn:active{transform:translateY(2px);box-shadow:none}
+  .code-nav-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .code-nav-btn:active{transform:translateY(3px);box-shadow:none}
+  .code-nav-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
+  }
+  .code-nav-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  .code-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  pre{
+    margin:0;padding:1rem;
+    overflow-x:auto;
+    background:rgba(0,0,0,.2);
+  }
+  code{
+    font-family:'Courier New',monospace;
+    font-size:.75rem;line-height:1.5;
+    color:var(--text);
+  }
+  
+  /* ======== VIDEO PLAYER ======== */
+  .video-container{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:1rem;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+  }
+  .video-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .video-nav-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .video-nav-btn:active{transform:translateY(3px);box-shadow:none}
+  .video-nav-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
+  }
+  .video-nav-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  .video-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  .video-wrapper{
+    position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
+    border:2px solid var(--pixel);
+    box-shadow:0 0 10px rgba(156,255,87,.3);
+  }
+  .video-wrapper iframe,
+  .video-wrapper video{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+  }
+  video{
+    background:#000;
   }
   
   footer{text-align:center;padding:2rem 0;font-size:.6rem;color:var(--sub)}
@@ -202,7 +309,9 @@
   
   <!-- PDF Viewer -->
   <div class="pdf-viewer-container">
-    <canvas id="pdf-canvas"></canvas>
+    <div class="pdf-canvas-wrapper">
+      <canvas id="pdf-canvas"></canvas>
+    </div>
   </div>
 </section>
 
@@ -215,6 +324,48 @@
     <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎥 Demo video</a></li>
     <!-- add more <li> lines here -->
   </ul>
+</section>
+
+<!-- ======== CODE VIEWER (OPTIONAL) ======== -->
+<section id="code" class="block" style="display:none;"> <!-- Remove style="display:none;" to show -->
+  <h2>Source Code</h2>
+  <p style="margin-bottom:1rem;">Browse through the project code files.</p>
+  
+  <!-- Code Navigation Controls -->
+  <div class="code-controls">
+    <button class="code-nav-btn" id="prev-code">◀ Prev</button>
+    <span class="code-info">
+      File <span id="code-num">1</span> / <span id="code-count">-</span>
+    </span>
+    <button class="code-nav-btn" id="next-code">Next ▶</button>
+  </div>
+  
+  <!-- Code Container -->
+  <div class="code-viewer-container" id="code-display">
+    <!-- Code will be loaded by code-viewer.js -->
+  </div>
+</section>
+
+<!-- ======== VIDEO PLAYER (OPTIONAL) ======== -->
+<section id="video" class="block" style="display:none;"> <!-- Remove style="display:none;" to show -->
+  <h2>Demo Videos</h2>
+  <p style="margin-bottom:1rem;">Watch the project demonstrations.</p>
+  
+  <!-- Video Navigation Controls -->
+  <div class="video-controls">
+    <button class="video-nav-btn" id="prev-video">◀ Prev</button>
+    <span class="video-info">
+      Video <span id="video-num">1</span> / <span id="video-count">-</span>
+    </span>
+    <button class="video-nav-btn" id="next-video">Next ▶</button>
+  </div>
+  
+  <!-- Video Container -->
+  <div class="video-container">
+    <div class="video-wrapper" id="video-display">
+      <!-- Videos will be loaded by video-player.js -->
+    </div>
+  </div>
 </section>
 
 <!-- ======== PICTURES ======== -->
@@ -235,95 +386,14 @@
 
 <!-- ======== PDF.JS LIBRARY ======== -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- ======== EXTERNAL SCRIPTS ======== -->
+<script src="pdf-viewer.js"></script>
+<script src="code-viewer.js"></script>
+<script src="video-player.js"></script>
+
+<!-- ======== THEME TOGGLE ======== -->
 <script>
-/* ===== PDF VIEWER ===== */
-// ======== EDIT 7: SET YOUR PDF PATH HERE ======== 
-const PDF_URL = 'assets/T_A_B_C_A.pdf';
-
-// PDF.js setup
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-let pdfDoc = null;
-let pageNum = 1;
-let pageRendering = false;
-let pageNumPending = null;
-const scale = 1.5;
-const canvas = document.getElementById('pdf-canvas');
-const ctx = canvas.getContext('2d');
-
-// Load PDF
-pdfjsLib.getDocument(PDF_URL).promise.then(function(pdfDoc_) {
-  pdfDoc = pdfDoc_;
-  document.getElementById('page-count').textContent = pdfDoc.numPages;
-  
-  // Initial render
-  renderPage(pageNum);
-}).catch(function(error) {
-  console.error('Error loading PDF:', error);
-  document.querySelector('.pdf-viewer-container').innerHTML = 
-    '<p style="text-align:center;color:var(--copper-lit);padding:2rem;">⚠️ PDF not found. Please check the path in the code.</p>';
-});
-
-// Render page
-function renderPage(num) {
-  pageRendering = true;
-  pdfDoc.getPage(num).then(function(page) {
-    const viewport = page.getViewport({scale: scale});
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const renderContext = {
-      canvasContext: ctx,
-      viewport: viewport
-    };
-    
-    const renderTask = page.render(renderContext);
-    renderTask.promise.then(function() {
-      pageRendering = false;
-      if (pageNumPending !== null) {
-        renderPage(pageNumPending);
-        pageNumPending = null;
-      }
-    });
-  });
-
-  document.getElementById('page-num').textContent = num;
-  updateButtons();
-}
-
-// Queue page render
-function queueRenderPage(num) {
-  if (pageRendering) {
-    pageNumPending = num;
-  } else {
-    renderPage(num);
-  }
-}
-
-// Previous page
-function onPrevPage() {
-  if (pageNum <= 1) return;
-  pageNum--;
-  queueRenderPage(pageNum);
-}
-
-// Next page
-function onNextPage() {
-  if (pageNum >= pdfDoc.numPages) return;
-  pageNum++;
-  queueRenderPage(pageNum);
-}
-
-// Update button states
-function updateButtons() {
-  document.getElementById('prev-page').disabled = (pageNum <= 1);
-  document.getElementById('next-page').disabled = (pageNum >= pdfDoc.numPages);
-}
-
-// Event listeners
-document.getElementById('prev-page').addEventListener('click', onPrevPage);
-document.getElementById('next-page').addEventListener('click', onNextPage);
-
 /* ===== THEME TOGGLE ===== */
 function initThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle');
