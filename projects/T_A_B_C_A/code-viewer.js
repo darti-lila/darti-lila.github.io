@@ -1,27 +1,41 @@
-/* ===== CODE VIEWER - LOADS FROM EXTERNAL FILES ===== */
+/* ===== CODE VIEWER ===== */
 
-// ======== EDIT: ADD YOUR CODE FILE PATHS HERE ========
+// ======== CONFIGURATION ========
+const CODE_EXTENSIONS = {
+  '.py': 'python',
+  '.js': 'javascript',
+  '.ino': 'arduino',
+  '.cpp': 'cpp',
+  '.c': 'cpp',
+  '.h': 'cpp',
+  '.html': 'html',
+  '.css': 'css',
+  '.java': 'java',
+  '.ts': 'javascript',
+  '.jsx': 'javascript',
+  '.sh': 'bash'
+};
+
+// ======== CODE ========
 const codeFiles = [
-  {
-    filename: 'tabca_test_1.ino',
-    language: 'arduino',
-    path: 'assets/T_A_B_C_A/tabca_test_1.ino'
-  },
-  {
-    filename: 'arduino_control.ino',
-    language: 'arduino',
-    path: 'assets/code/arduino_control.ino'
-  },
-  {
-    filename: 'config.js',
-    language: 'javascript',
-    path: 'assets/code/config.js'
-  }
+  'code/tabca_test_1.ino',
 ];
 
-// Current file index
+// Current file index and loaded files cache
 let currentFileIndex = 0;
 let loadedCodeFiles = [];
+
+// Get base path (folder where the HTML file is)
+function getBasePath() {
+  const path = window.location.pathname;
+  return path.substring(0, path.lastIndexOf('/') + 1);
+}
+
+// Detect language from filename
+function detectLanguage(filename) {
+  const ext = filename.substring(filename.lastIndexOf('.')).toLowerCase();
+  return CODE_EXTENSIONS[ext] || 'text';
+}
 
 // Simple syntax highlighting
 function highlightCode(code, language) {
@@ -29,25 +43,29 @@ function highlightCode(code, language) {
   
   // Keywords for different languages
   const keywords = {
-    python: ['import', 'from', 'def', 'class', 'if', 'else', 'elif', 'for', 'while', 'return', 'True', 'False', 'None', 'and', 'or', 'not', 'in', 'is', 'with', 'as', 'break', 'continue', 'try', 'except', 'finally', 'raise'],
-    javascript: ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'class', 'import', 'export', 'async', 'await', 'new', 'this', 'default', 'case', 'switch', 'break'],
-    arduino: ['void', 'int', 'float', 'char', 'String', 'digitalWrite', 'pinMode', 'Serial', 'HIGH', 'LOW', 'OUTPUT', 'INPUT', 'const', 'setup', 'loop', 'delay', 'analogRead', 'constrain', 'abs', 'attachInterrupt'],
-    cpp: ['include', 'using', 'namespace', 'std', 'int', 'float', 'double', 'char', 'void', 'class', 'public', 'private', 'return', 'if', 'else', 'for', 'while'],
-    html: ['DOCTYPE', 'html', 'head', 'body', 'div', 'span', 'title', 'meta', 'link', 'script', 'style'],
-    css: ['color', 'background', 'margin', 'padding', 'border', 'font', 'display', 'position', 'width', 'height']
+    python: ['import', 'from', 'def', 'class', 'if', 'else', 'elif', 'for', 'while', 'return', 'True', 'False', 'None', 'and', 'or', 'not', 'in', 'is', 'with', 'as', 'break', 'continue', 'try', 'except', 'finally', 'raise', 'lambda', 'yield'],
+    javascript: ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'class', 'import', 'export', 'async', 'await', 'new', 'this', 'default', 'case', 'switch', 'break', 'continue', 'try', 'catch', 'finally'],
+    arduino: ['void', 'int', 'float', 'char', 'String', 'bool', 'byte', 'digitalWrite', 'pinMode', 'Serial', 'HIGH', 'LOW', 'OUTPUT', 'INPUT', 'INPUT_PULLUP', 'const', 'setup', 'loop', 'delay', 'analogRead', 'analogWrite', 'constrain', 'abs', 'map', 'attachInterrupt'],
+    cpp: ['include', 'using', 'namespace', 'std', 'int', 'float', 'double', 'char', 'void', 'class', 'public', 'private', 'protected', 'return', 'if', 'else', 'for', 'while', 'const', 'static', 'virtual', 'template', 'typename'],
+    java: ['public', 'private', 'protected', 'class', 'interface', 'extends', 'implements', 'import', 'package', 'static', 'final', 'void', 'int', 'String', 'boolean', 'return', 'if', 'else', 'for', 'while', 'new', 'this', 'super'],
+    html: ['DOCTYPE', 'html', 'head', 'body', 'div', 'span', 'title', 'meta', 'link', 'script', 'style', 'img', 'href', 'src'],
+    css: ['color', 'background', 'margin', 'padding', 'border', 'font', 'display', 'position', 'width', 'height', 'flex', 'grid'],
+    bash: ['echo', 'cd', 'ls', 'mkdir', 'rm', 'cp', 'mv', 'cat', 'grep', 'if', 'then', 'else', 'fi', 'for', 'do', 'done', 'while']
   };
   
   // Escape HTML
   highlighted = highlighted.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   
   // Highlight comments
-  if (language === 'python') {
+  if (language === 'python' || language === 'bash') {
     highlighted = highlighted.replace(/(#.*$)/gm, '<span style="color:#6a9955">$1</span>');
-  } else if (language === 'javascript' || language === 'arduino' || language === 'cpp') {
+  } else if (language === 'javascript' || language === 'arduino' || language === 'cpp' || language === 'java') {
     highlighted = highlighted.replace(/(\/\/.*$)/gm, '<span style="color:#6a9955">$1</span>');
     highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span style="color:#6a9955">$1</span>');
   } else if (language === 'html') {
     highlighted = highlighted.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span style="color:#6a9955">$1</span>');
+  } else if (language === 'css') {
+    highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span style="color:#6a9955">$1</span>');
   }
   
   // Highlight strings
@@ -71,25 +89,28 @@ async function loadCodeFile(filePath) {
   try {
     const response = await fetch(filePath);
     if (!response.ok) {
-      throw new Error(`Failed to load: ${filePath}`);
+      throw new Error(`HTTP ${response.status}: ${filePath}`);
     }
     return await response.text();
   } catch (error) {
     console.error('Error loading code file:', error);
-    return `// Error loading file: ${filePath}\n// Make sure the file exists in the correct location.`;
+    return `// Error loading file: ${filePath}\n// ${error.message}\n// Make sure:\n// 1. The file exists in the correct location\n// 2. The path in code-viewer.js is correct\n// 3. You're using a web server (not file://)`;
   }
 }
 
-// Display code file
+// Display code file with scroll
 async function displayCode(index) {
   const container = document.getElementById('code-display');
   if (!container || codeFiles.length === 0) return;
   
-  const file = codeFiles[index];
+  const filePath = codeFiles[index];
+  const filename = filePath.substring(filePath.lastIndexOf('/') + 1);
+  const language = detectLanguage(filename);
   
   // Load code if not already loaded
   if (!loadedCodeFiles[index]) {
-    loadedCodeFiles[index] = await loadCodeFile(file.path);
+    container.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--pixel);">Loading code...</div>';
+    loadedCodeFiles[index] = await loadCodeFile(filePath);
   }
   
   const code = loadedCodeFiles[index];
@@ -98,21 +119,26 @@ async function displayCode(index) {
   const header = document.createElement('div');
   header.className = 'code-header';
   header.innerHTML = `
-    <span class="code-filename">📄 ${file.filename}</span>
+    <span class="code-filename">📄 ${filename}</span>
     <button class="code-copy-btn" onclick="copyCode(${index})">Copy</button>
   `;
+  
+  // Create scrollable content wrapper
+  const contentWrapper = document.createElement('div');
+  contentWrapper.className = 'code-content-wrapper';
   
   // Create code block
   const pre = document.createElement('pre');
   const codeElement = document.createElement('code');
-  codeElement.innerHTML = highlightCode(code, file.language);
+  codeElement.innerHTML = highlightCode(code, language);
   codeElement.dataset.rawCode = code;
   pre.appendChild(codeElement);
+  contentWrapper.appendChild(pre);
   
   // Update container
   container.innerHTML = '';
   container.appendChild(header);
-  container.appendChild(pre);
+  container.appendChild(contentWrapper);
   
   // Update display
   document.getElementById('code-num').textContent = index + 1;

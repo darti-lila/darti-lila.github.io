@@ -1,4 +1,4 @@
-/* ===== VIDEO PLAYER - LOADS FROM ASSETS/VIDEOS FOLDER ===== */
+/* ===== VIDEO PLAYER ===== */
 
 // ======== EDIT: ADD YOUR VIDEO PATHS HERE ========
 const videos = [
@@ -10,13 +10,8 @@ const videos = [
   {
     title: 'Assembly Process',
     type: 'local',
-    source: 'assets/videos/assembly.mp4'  // Path to local video
+    source: 'videos/assembly.mp4'  // Relative path from project folder
   },
-  {
-    title: 'Final Testing',
-    type: 'local',
-    source: 'assets/videos/testing.mp4'
-  }
 ];
 
 // Current video index
