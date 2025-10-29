@@ -25,7 +25,7 @@ if (canvas && ctx) {
   }).catch(function(error) {
     console.error('Error loading PDF:', error);
     document.querySelector('.pdf-viewer-container').innerHTML = 
-      '<p style="text-align:center;color:var(--copper-lit);padding:2rem;">⚠️ PDF not found. Please check the path in pdf-viewer.js</p>';
+      '<p style="text-align:center;color:var(--copper-lit);padding:2rem;">PDF not found. Please check the path in pdf-viewer.js</p>';
   });
 
   // Render page
