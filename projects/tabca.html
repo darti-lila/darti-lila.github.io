@@ -76,6 +76,7 @@
     font-size:.8rem;text-transform:uppercase;letter-spacing:2px;
     border:none;box-shadow:0 4px 0 var(--pixel-dark);
     cursor:pointer;transition:all .1s;
+    text-decoration:none;
   }
   .pixel-btn:active{transform:translateY(4px);box-shadow:none}
 
@@ -85,6 +86,47 @@
   .links li{margin:.6rem 0}
   .gallery{display:flex;flex-wrap:wrap;gap:1rem}
   .gallery img{image-rendering:pixelated;border:4px solid var(--copper);border-radius:4px;max-width:240px}
+  
+  /* ======== PDF VIEWER ======== */
+  .pdf-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .pdf-viewer-container{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:1rem;
+    max-height:600px;overflow-y:auto;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+  }
+  #pdf-canvas{
+    display:block;margin:0 auto;
+    border:2px solid var(--pixel);
+    box-shadow:0 0 10px rgba(156,255,87,.3);
+    max-width:100%;
+    height:auto;
+  }
+  .page-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  .pdf-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .pdf-btn:active{transform:translateY(3px);box-shadow:none}
+  .pdf-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+  }
+  .pdf-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  
   footer{text-align:center;padding:2rem 0;font-size:.6rem;color:var(--sub)}
   </style>
 </head>
@@ -105,18 +147,32 @@
 <header>
   <div class="crt-box">
     <!-- ======== EDIT 2: PROJECT TITLE ======== -->
-    <h1>PROJECT_NAME</h1>
+    <h1>T.A.B.C.A</h1>
     <!-- ======== EDIT 3: SHORT TAGLINE ======== -->
-    <p>One-sentence elevator pitch</p>
+    <p>Temperature AND Barometric Calculation Assistant</p>
   </div>
 </header>
 
-<!-- ======== DOCUMENTATION ======== -->
+<!-- ======== DOCUMENTATION WITH PDF VIEWER ======== -->
 <section id="docs" class="block">
   <h2>Documentation</h2>
-  <p>Grab the full report (PDF).</p>
-  <!-- ======== EDIT 4: PDF PATH ======== -->
-  <a class="pixel-btn" href="assets/report.pdf" download>Download PDF</a>
+  <p style="margin-bottom:1rem;">View the full report below or download it.</p>
+  
+  <!-- PDF Controls -->
+  <div class="pdf-controls">
+    <button class="pdf-btn" id="prev-page">◀ Prev</button>
+    <span class="page-info">
+      Page <span id="page-num">1</span> / <span id="page-count">-</span>
+    </span>
+    <button class="pdf-btn" id="next-page">Next ▶</button>
+    <!-- ======== EDIT 4: PDF PATH ======== -->
+    <a class="pixel-btn" href="assets/report.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
+  </div>
+  
+  <!-- PDF Viewer -->
+  <div class="pdf-viewer-container">
+    <canvas id="pdf-canvas"></canvas>
+  </div>
 </section>
 
 <!-- ======== LINKS ======== -->
@@ -124,8 +180,8 @@
   <h2>Links & Resources</h2>
   <ul>
     <!-- ======== EDIT 5: YOUR LINKS ======== -->
-    <li><a href="https://github.com/YOU/REPO" target="_blank">Source code (GitHub)</a></li>
-    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">Demo video</a></li>
+    <li><a href="https://github.com/YOU/REPO" target="_blank">📂 Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎥 Demo video</a></li>
     <!-- add more <li> lines here -->
   </ul>
 </section>
@@ -145,5 +201,97 @@
 <footer>
   &copy; 2025 Darti Lila – Made with love and care
 </footer>
+
+<!-- ======== PDF.JS LIBRARY ======== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+/* ===== PDF VIEWER ===== */
+// ======== EDIT 7: SET YOUR PDF PATH HERE ======== 
+const PDF_URL = 'assets/T_A_B_C_A.pdf';
+
+// PDF.js setup
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfDoc = null;
+let pageNum = 1;
+let pageRendering = false;
+let pageNumPending = null;
+const scale = 1.5;
+const canvas = document.getElementById('pdf-canvas');
+const ctx = canvas.getContext('2d');
+
+// Load PDF
+pdfjsLib.getDocument(PDF_URL).promise.then(function(pdfDoc_) {
+  pdfDoc = pdfDoc_;
+  document.getElementById('page-count').textContent = pdfDoc.numPages;
+  
+  // Initial render
+  renderPage(pageNum);
+}).catch(function(error) {
+  console.error('Error loading PDF:', error);
+  document.querySelector('.pdf-viewer-container').innerHTML = 
+    '<p style="text-align:center;color:var(--copper-lit);padding:2rem;">⚠️ PDF not found. Please check the path in the code.</p>';
+});
+
+// Render page
+function renderPage(num) {
+  pageRendering = true;
+  pdfDoc.getPage(num).then(function(page) {
+    const viewport = page.getViewport({scale: scale});
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+      canvasContext: ctx,
+      viewport: viewport
+    };
+    
+    const renderTask = page.render(renderContext);
+    renderTask.promise.then(function() {
+      pageRendering = false;
+      if (pageNumPending !== null) {
+        renderPage(pageNumPending);
+        pageNumPending = null;
+      }
+    });
+  });
+
+  document.getElementById('page-num').textContent = num;
+  updateButtons();
+}
+
+// Queue page render
+function queueRenderPage(num) {
+  if (pageRendering) {
+    pageNumPending = num;
+  } else {
+    renderPage(num);
+  }
+}
+
+// Previous page
+function onPrevPage() {
+  if (pageNum <= 1) return;
+  pageNum--;
+  queueRenderPage(pageNum);
+}
+
+// Next page
+function onNextPage() {
+  if (pageNum >= pdfDoc.numPages) return;
+  pageNum++;
+  queueRenderPage(pageNum);
+}
+
+// Update button states
+function updateButtons() {
+  document.getElementById('prev-page').disabled = (pageNum <= 1);
+  document.getElementById('next-page').disabled = (pageNum >= pdfDoc.numPages);
+}
+
+// Event listeners
+document.getElementById('prev-page').addEventListener('click', onPrevPage);
+document.getElementById('next-page').addEventListener('click', onNextPage);
+</script>
 </body>
 </html>
