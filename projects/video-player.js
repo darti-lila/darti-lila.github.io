@@ -1,21 +1,21 @@
-/* ===== VIDEO PLAYER WITH MULTI-VIDEO NAVIGATION ===== */
+/* ===== VIDEO PLAYER - LOADS FROM ASSETS/VIDEOS FOLDER ===== */
 
-// ======== EDIT: ADD YOUR VIDEOS HERE ========
+// ======== EDIT: ADD YOUR VIDEO PATHS HERE ========
 const videos = [
   {
     title: 'Project Demo',
-    type: 'youtube', // 'youtube' or 'local'
-    source: 'dQw4w9WgXcQ' // YouTube video ID or local file path
+    type: 'youtube',        // 'youtube' or 'local'
+    source: 'dQw4w9WgXcQ'  // YouTube video ID or path to local file
   },
   {
     title: 'Assembly Process',
-    type: 'youtube',
-    source: 'dQw4w9WgXcQ' // Replace with your video ID
+    type: 'local',
+    source: 'assets/videos/assembly.mp4'  // Path to local video
   },
   {
     title: 'Final Testing',
     type: 'local',
-    source: 'assets/demo.mp4' // Path to local video file
+    source: 'assets/videos/testing.mp4'
   }
 ];
 
@@ -45,6 +45,7 @@ function displayVideo(index) {
     videoHTML = `
       <video controls>
         <source src="${video.source}" type="video/mp4">
+        <source src="${video.source.replace('.mp4', '.webm')}" type="video/webm">
         Your browser does not support the video tag.
       </video>
     `;

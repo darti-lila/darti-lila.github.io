@@ -1,132 +1,27 @@
-/* ===== CODE VIEWER WITH MULTI-FILE NAVIGATION ===== */
+/* ===== CODE VIEWER - LOADS FROM EXTERNAL FILES ===== */
 
-// ======== EDIT: ADD YOUR CODE FILES HERE ========
+// ======== EDIT: ADD YOUR CODE FILE PATHS HERE ========
 const codeFiles = [
   {
-    filename: 'main.py',
-    language: 'python',
-    code: `# Temperature and Barometric Calculation Assistant
-import board
-import adafruit_bmp280
-import time
-
-# Initialize I2C and sensor
-i2c = board.I2C()
-sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
-
-# Sea level pressure for altitude calculation
-sensor.sea_level_pressure = 1013.25
-
-def read_sensor():
-    """Read temperature, pressure, and altitude from sensor"""
-    temperature = sensor.temperature
-    pressure = sensor.pressure
-    altitude = sensor.altitude
-    
-    return {
-        'temp': temperature,
-        'pressure': pressure,
-        'altitude': altitude
-    }
-
-while True:
-    data = read_sensor()
-    print(f"Temperature: {data['temp']:.2f} °C")
-    print(f"Pressure: {data['pressure']:.2f} hPa")
-    print(f"Altitude: {data['altitude']:.2f} meters")
-    print("-" * 30)
-    
-    time.sleep(2)`
+    filename: 'tabca_test_1.ino',
+    language: 'arduino',
+    path: 'assets/T_A_B_C_A/tabca_test_1.ino'
   },
   {
     filename: 'arduino_control.ino',
     language: 'arduino',
-    code: `// Arduino Solar Tracker Control
-#include <Servo.h>
-
-Servo panServo;
-Servo tiltServo;
-
-const int LDR_TOP = A0;
-const int LDR_BOTTOM = A1;
-const int LDR_LEFT = A2;
-const int LDR_RIGHT = A3;
-
-void setup() {
-  Serial.begin(9600);
-  panServo.attach(9);
-  tiltServo.attach(10);
-  
-  // Initialize to center position
-  panServo.write(90);
-  tiltServo.write(90);
-}
-
-void loop() {
-  int topLight = analogRead(LDR_TOP);
-  int bottomLight = analogRead(LDR_BOTTOM);
-  int leftLight = analogRead(LDR_LEFT);
-  int rightLight = analogRead(LDR_RIGHT);
-  
-  // Calculate differences
-  int vertDiff = topLight - bottomLight;
-  int horizDiff = leftLight - rightLight;
-  
-  // Adjust servos based on light difference
-  if (abs(vertDiff) > 50) {
-    int tiltPos = tiltServo.read();
-    if (vertDiff > 0) tiltPos += 1;
-    else tiltPos -= 1;
-    tiltServo.write(constrain(tiltPos, 0, 180));
-  }
-  
-  if (abs(horizDiff) > 50) {
-    int panPos = panServo.read();
-    if (horizDiff > 0) panPos += 1;
-    else panPos -= 1;
-    panServo.write(constrain(panPos, 0, 180));
-  }
-  
-  delay(100);
-}`
+    path: 'assets/code/arduino_control.ino'
   },
   {
     filename: 'config.js',
     language: 'javascript',
-    code: `// Configuration settings
-const config = {
-  sensor: {
-    updateInterval: 2000, // ms
-    temperatureUnit: 'celsius',
-    pressureUnit: 'hPa'
-  },
-  
-  display: {
-    theme: 'dark',
-    showGraph: true,
-    refreshRate: 1000
-  },
-  
-  alerts: {
-    highTemp: 35,
-    lowTemp: -10,
-    highPressure: 1030,
-    lowPressure: 980
-  },
-  
-  logging: {
-    enabled: true,
-    path: './logs/',
-    maxSize: 10 // MB
-  }
-};
-
-export default config;`
+    path: 'assets/code/config.js'
   }
 ];
 
 // Current file index
 let currentFileIndex = 0;
+let loadedCodeFiles = [];
 
 // Simple syntax highlighting
 function highlightCode(code, language) {
@@ -134,9 +29,12 @@ function highlightCode(code, language) {
   
   // Keywords for different languages
   const keywords = {
-    python: ['import', 'from', 'def', 'class', 'if', 'else', 'elif', 'for', 'while', 'return', 'True', 'False', 'None', 'and', 'or', 'not', 'in', 'is', 'with', 'as', 'break', 'continue'],
-    javascript: ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'class', 'import', 'export', 'async', 'await', 'new', 'this', 'default'],
-    arduino: ['void', 'int', 'float', 'char', 'String', 'digitalWrite', 'pinMode', 'Serial', 'HIGH', 'LOW', 'OUTPUT', 'INPUT', 'const', 'setup', 'loop', 'delay', 'analogRead', 'constrain', 'abs']
+    python: ['import', 'from', 'def', 'class', 'if', 'else', 'elif', 'for', 'while', 'return', 'True', 'False', 'None', 'and', 'or', 'not', 'in', 'is', 'with', 'as', 'break', 'continue', 'try', 'except', 'finally', 'raise'],
+    javascript: ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'class', 'import', 'export', 'async', 'await', 'new', 'this', 'default', 'case', 'switch', 'break'],
+    arduino: ['void', 'int', 'float', 'char', 'String', 'digitalWrite', 'pinMode', 'Serial', 'HIGH', 'LOW', 'OUTPUT', 'INPUT', 'const', 'setup', 'loop', 'delay', 'analogRead', 'constrain', 'abs', 'attachInterrupt'],
+    cpp: ['include', 'using', 'namespace', 'std', 'int', 'float', 'double', 'char', 'void', 'class', 'public', 'private', 'return', 'if', 'else', 'for', 'while'],
+    html: ['DOCTYPE', 'html', 'head', 'body', 'div', 'span', 'title', 'meta', 'link', 'script', 'style'],
+    css: ['color', 'background', 'margin', 'padding', 'border', 'font', 'display', 'position', 'width', 'height']
   };
   
   // Escape HTML
@@ -145,9 +43,11 @@ function highlightCode(code, language) {
   // Highlight comments
   if (language === 'python') {
     highlighted = highlighted.replace(/(#.*$)/gm, '<span style="color:#6a9955">$1</span>');
-  } else if (language === 'javascript' || language === 'arduino') {
+  } else if (language === 'javascript' || language === 'arduino' || language === 'cpp') {
     highlighted = highlighted.replace(/(\/\/.*$)/gm, '<span style="color:#6a9955">$1</span>');
     highlighted = highlighted.replace(/(\/\*[\s\S]*?\*\/)/g, '<span style="color:#6a9955">$1</span>');
+  } else if (language === 'html') {
+    highlighted = highlighted.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span style="color:#6a9955">$1</span>');
   }
   
   // Highlight strings
@@ -166,12 +66,33 @@ function highlightCode(code, language) {
   return highlighted;
 }
 
+// Load code file from path
+async function loadCodeFile(filePath) {
+  try {
+    const response = await fetch(filePath);
+    if (!response.ok) {
+      throw new Error(`Failed to load: ${filePath}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error('Error loading code file:', error);
+    return `// Error loading file: ${filePath}\n// Make sure the file exists in the correct location.`;
+  }
+}
+
 // Display code file
-function displayCode(index) {
+async function displayCode(index) {
   const container = document.getElementById('code-display');
   if (!container || codeFiles.length === 0) return;
   
   const file = codeFiles[index];
+  
+  // Load code if not already loaded
+  if (!loadedCodeFiles[index]) {
+    loadedCodeFiles[index] = await loadCodeFile(file.path);
+  }
+  
+  const code = loadedCodeFiles[index];
   
   // Create header
   const header = document.createElement('div');
@@ -184,8 +105,8 @@ function displayCode(index) {
   // Create code block
   const pre = document.createElement('pre');
   const codeElement = document.createElement('code');
-  codeElement.innerHTML = highlightCode(file.code, file.language);
-  codeElement.dataset.rawCode = file.code;
+  codeElement.innerHTML = highlightCode(code, file.language);
+  codeElement.dataset.rawCode = code;
   pre.appendChild(codeElement);
   
   // Update container
@@ -226,11 +147,16 @@ function showNextCode() {
 
 // Copy code to clipboard
 function copyCode(index) {
-  const code = codeFiles[index].code;
+  const code = loadedCodeFiles[index];
+  
+  if (!code) {
+    alert('Code not loaded yet');
+    return;
+  }
   
   navigator.clipboard.writeText(code).then(() => {
     const buttons = document.querySelectorAll('.code-copy-btn');
-    const button = buttons[0]; // Since we only have one displayed at a time
+    const button = buttons[0];
     
     if (button) {
       const originalText = button.textContent;
