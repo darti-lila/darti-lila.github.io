@@ -142,10 +142,25 @@
   }
 
   /* ======== PDF / LINKS / PICTURES ======== */
-  .block{background:var(--crt);border:4px solid var(--copper);border-radius:8px;padding:1.5rem;margin:2rem 0}
-  .links ul{list-style:none;padding-left:0}
-  .links li{margin:.8rem 0}
-  .links a{color:var(--pixel);text-decoration:none;font-size:.85rem;transition:color .2s}
+  .block{background:var(--crt);border:4px solid var(--copper);border-radius:8px;padding:2rem;margin:2rem 0}
+  .links ul{
+    list-style:none;
+    padding-left:0;
+    max-width:800px;
+    margin:0 auto;
+  }
+  .links li{
+    margin:1rem 0;
+    padding-left:2rem;
+    position:relative;
+  }
+  .links a{
+    color:var(--pixel);
+    text-decoration:none;
+    font-size:.85rem;
+    transition:color .2s;
+    display:inline-block;
+  }
   .links a:hover{color:var(--copper-lit)}
   .gallery{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
   .gallery img{image-rendering:pixelated;border:4px solid var(--copper);border-radius:4px;max-width:240px;transition:transform .2s}
@@ -366,7 +381,7 @@
 <!-- ======== PIXEL NAV - PROJECT NAVIGATION ======== -->
 <nav>
   <ul>
-    <li><a href="../index.html">Home</a></li>
+    <li><a href="../../index.html">Home</a></li>
     <li><a href="#description">Description</a></li>
     <li><a href="#docs">Documentation</a></li>
     <li><a href="#code">Code</a></li>
@@ -389,12 +404,23 @@
 
 <!-- ======== DESCRIPTION SECTION ======== -->
 <section id="description">
-  <h2>📝 Project Description</h2>
+  <h2>Project Description</h2>
   <div class="description-content">
     <!-- ======== EDIT: ADD YOUR PROJECT DESCRIPTION ======== -->
     <p>
       The Temperature AND Barometric Calculation Assistant (T.A.B.C.A) is an advanced environmental monitoring system 
       designed to provide real-time atmospheric data collection and analysis.
+
+      T.A.B.C.A. is a mobile weather station capable of being a companion to a scientist in
+      the field by providing accurate meteorological data and predictions about different
+      environments. The robot realizes this by using a microcontroller that computes the
+      information gathered from the different sensors that are included in the scheme. The
+      beauty of T.A.B.C.A is that it is self-reliant, meaning it provides energy for itself by
+      using a solar panel and circuits to recharge its own battery. T.A.B.C.A. has a strong
+      outer design that protects her circuits from outer shock and bad weather. The wheels
+      that are used provide mobility in muddy terrains but with a disadvantage when
+      traversing through harsh rocky terrain.
+
     </p>
     <p>
       <strong>Key Features:</strong>
@@ -402,20 +428,24 @@
     <ul>
       <li>Real-time temperature monitoring with ±0.1°C accuracy</li>
       <li>Barometric pressure sensing for weather prediction</li>
-      <li>Data logging capabilities with timestamp tracking</li>
-      <li>User-friendly interface with visual feedback</li>
+      <li>Power production circuit using solar tracking solar cells</li>
+      <li>Bluetooth controlled mini rover</li>
       <li>Low power consumption design</li>
     </ul>
     <p>
-      This project demonstrates the integration of environmental sensors with microcontroller systems 
-      to create a practical and educational tool for weather monitoring.
+      This is the first robotics project I have ever built. It was created as part of my robotics competition
+      and it has a lot of flaws, but it taught me a lot about electronics, coding, and mechanical design.
+    </p>
+    <p>
+      NOTE: A lot of this code, images and videos are old and not well documented since this was my first project.
+      Please reach out if you have any questions or want to collaborate on improving this project! (Still have plans to bring it back to life)
     </p>
   </div>
 </section>
 
 <!-- ======== DOCUMENTATION WITH PDF VIEWER ======== -->
 <section id="docs" class="block">
-  <h2>📄 Documentation</h2>
+  <h2>Documentation</h2>
   <p style="margin-bottom:1rem;">View the full report below or download it.</p>
   
   <!-- PDF Controls -->
@@ -426,7 +456,7 @@
     </span>
     <button class="pdf-btn" id="next-page">Next ▶</button>
     <!-- ======== EDIT 4: PDF PATH ======== -->
-    <a class="pixel-btn" href="T_A_B_C_A.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
+    <a class="pixel-btn" href="assets/T_A_B_C_A.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
   </div>
   
   <!-- PDF Viewer -->
@@ -439,7 +469,7 @@
 
 <!-- ======== CODE VIEWER ======== -->
 <section id="code" class="block">
-  <h2>💻 Source Code</h2>
+  <h2>Source Code</h2>
   <p style="margin-bottom:1rem;">Browse through the project code files.</p>
   
   <!-- Code Navigation Controls -->
@@ -459,7 +489,7 @@
 
 <!-- ======== VIDEO PLAYER ======== -->
 <section id="video" class="block">
-  <h2>Demo Videos</h2>
+  <h2>🎥 Demo Videos</h2>
   <p style="margin-bottom:1rem;">Watch the project demonstrations.</p>
   
   <!-- Video Navigation Controls -->
@@ -484,21 +514,24 @@
   <h2>🔗 Links & Resources</h2>
   <ul>
     <!-- ======== EDIT 5: YOUR LINKS ======== -->
-    <li><a href="https://github.com/YOU/REPO" target="_blank">📂 Source code (GitHub)</a></li>
-    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎥 Demo video (YouTube)</a></li>
-    <li><a href="#" target="_blank">📊 Technical specifications</a></li>
-    <li><a href="#" target="_blank">📚 Additional resources</a></li>
+     <p>Currently no additional links available for this project.</p>
+    <!-- <li><a href="https://github.com/YOU/REPO" target="_blank">Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">Demo video (YouTube)</a></li>
+    <li><a href="#" target="_blank">Technical specifications</a></li>
+    <li><a href="#" target="_blank">Additional resources</a></li> -->
     <!-- add more <li> lines here -->
   </ul>
 </section>
 
 <!-- ======== PICTURES ======== -->
 <section id="gallery" class="block">
-  <h2>📷 Photos / Screenshots</h2>
+  <h2>Photos / Screenshots</h2>
   <div class="gallery">
     <!-- ======== EDIT 6: IMAGE PATHS ======== -->
-    <img src="assets/img/photo1.png" alt="caption 1">
-    <img src="assets/img/photo2.png" alt="caption 2">
+    <img src="/images/Tabca front Profile.png" alt="TABCA front view">
+    <img src="/images/Tabca side profile.png" alt="TABCA side view">
+    <img src="/images/TABCA under Construction.png" alt="TABCA under construction">
+    <img src="/images/Tabca control Circuit.png" alt="TABCA main circuit">
     <!-- drop more <img> lines here -->
   </div>
 </section>

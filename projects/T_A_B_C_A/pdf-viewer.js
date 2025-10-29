@@ -1,6 +1,6 @@
 /* ===== PDF VIEWER ===== */
-// ======== EDIT: SET YOUR PDF PATH HERE ======== 
-const PDF_URL = 'assets/report.pdf';
+
+const PDF_URL = 'T_A_B_C_A.pdf';
 
 // PDF.js setup
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';

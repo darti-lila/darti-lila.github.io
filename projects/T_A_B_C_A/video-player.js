@@ -2,15 +2,15 @@
 
 // ======== EDIT: ADD YOUR VIDEO PATHS HERE ========
 const videos = [
+  // {
+  //   title: 'Project Demo',
+  //   type: 'youtube',        // 'youtube' or 'local'
+  //   source: 'dQw4w9WgXcQ'  // YouTube video ID or path to local file
+  // },
   {
-    title: 'Project Demo',
-    type: 'youtube',        // 'youtube' or 'local'
-    source: 'dQw4w9WgXcQ'  // YouTube video ID or path to local file
-  },
-  {
-    title: 'Assembly Process',
+    title: 'Tabca First Test Drive',
     type: 'local',
-    source: 'videos/assembly.mp4'  // Relative path from project folder
+    source: 'videos/TABCA Movement Test.mp4'  // Relative path from project folder
   },
 ];
 
