@@ -186,6 +186,14 @@
     display:inline-block;
   }
   .links a:hover{color:var(--copper-lit)}
+  .gallery{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    justify-content:center;
+    max-width:900px;
+    margin:0 auto;
+  }
   .gallery img{
     image-rendering:pixelated;
     border:4px solid var(--copper);
@@ -196,6 +204,66 @@
     transition:transform .2s;
   }
   .gallery img:hover{transform:scale(1.05)}
+  
+  /* ======== SCHEMATICS SECTION ======== */
+  .schematics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:2rem;
+    margin-top:1.5rem;
+  }
+  .schematic-item{
+    background:rgba(0,0,0,.2);
+    border:3px solid var(--copper);
+    border-radius:8px;
+    padding:1rem;
+    text-align:center;
+    transition:all .3s;
+  }
+  .schematic-item:hover{
+    border-color:var(--copper-lit);
+    transform:translateY(-4px);
+    box-shadow:0 6px 12px rgba(0,0,0,.3);
+  }
+  .schematic-preview{
+    width:100%;
+    height:200px;
+    object-fit:contain;
+    border:2px solid var(--pixel);
+    border-radius:4px;
+    margin-bottom:1rem;
+    background:rgba(255,255,255,.05);
+    padding:.5rem;
+  }
+  .schematic-title{
+    color:var(--pixel);
+    font-size:.85rem;
+    margin-bottom:.8rem;
+    line-height:1.4;
+  }
+  .schematic-download{
+    display:inline-block;
+    padding:.6rem 1.2rem;
+    background:var(--pixel);
+    color:var(--crt);
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;
+    transition:all .1s;
+    text-decoration:none;
+    border-radius:4px;
+  }
+  .schematic-download:active{
+    transform:translateY(3px);
+    box-shadow:none;
+  }
+  .schematic-download:hover{
+    background:var(--copper-lit);
+    box-shadow:0 3px 0 var(--copper);
+  }
   
   /* ======== PDF VIEWER - PROPERLY CENTERED ======== */
   .pdf-controls{
@@ -419,6 +487,7 @@
     <li><a href="#docs">Documentation</a></li>
     <li><a href="#code">Code</a></li>
     <li><a href="#video">Videos</a></li>
+    <li><a href="#schematics">Schematics</a></li>
     <li><a href="#links">Links</a></li>
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#collaborators">Collaborators</a></li>
@@ -541,6 +610,38 @@
   </div>
 </section>
 
+<!-- ======== SCHEMATICS ======== -->
+<section id="schematics" class="block">
+  <h2>Schematics</h2>
+  <p style="margin-bottom:1.5rem;">Circuit diagrams and technical schematics for the project. Click to view or download.</p>
+  <p>Currently there are no schematics or diagrams for this project</p>
+  <div class="schematics-grid">
+    <!-- ======== EDIT: ADD YOUR SCHEMATICS ======== -->
+    
+    <!-- Schematic Item 1 -->
+    <!-- <div class="schematic-item">
+      <img src="schematics/power-circuit.png" alt="Power Circuit Schematic" class="schematic-preview">
+      <div class="schematic-title">Power Supply Circuit</div>
+      <a href="schematics/power-circuit.pdf" download class="schematic-download">⬇ Download PDF</a>
+    </div> -->
+    
+    <!-- Schematic Item 2 -->
+    <!-- <div class="schematic-item">
+      <img src="schematics/sensor-circuit.png" alt="Sensor Circuit Schematic" class="schematic-preview">
+      <div class="schematic-title">Sensor Interface Circuit</div>
+      <a href="schematics/sensor-circuit.pdf" download class="schematic-download">⬇ Download PDF</a>
+    </div> -->
+    
+    <!-- Schematic Item 3 -->
+    <!-- <div class="schematic-item">
+      <img src="schematics/main-circuit.png" alt="Main Circuit Schematic" class="schematic-preview">
+      <div class="schematic-title">Main Control Circuit</div>
+      <a href="schematics/main-circuit.pdf" download class="schematic-download">⬇ Download PDF</a>
+    </div> -->
+    
+  </div>
+</section>
+
 <!-- ======== LINKS ======== -->
 <section id="links" class="block links">
   <h2>Links & Resources</h2>
@@ -570,14 +671,14 @@
 
 <!-- ======== COLLABORATORS ======== -->
 <section id="collaborators">
-  <h2>👥 Collaborators</h2>
+  <h2>Collaborators</h2>
   <div class="description-content">
     <!-- ======== EDIT: ADD YOUR COLLABORATORS ======== -->
     <p>
       This project was developed with the help of amazing collaborators who contributed their time, skills, and expertise.
     </p>
     <ul>
-      <li><strong>Marvin Ruka (Best Friend :D)</strong> - Programmer</li>
+      <li><strong>Marvin Ruka</strong> - Programming</li>
     </ul>
   </div>
 </section>
