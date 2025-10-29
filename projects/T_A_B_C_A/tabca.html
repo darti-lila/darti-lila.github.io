@@ -107,6 +107,11 @@
   }
   header h1{font-size:1.8rem;color:var(--pixel);text-shadow:0 0 6px var(--pixel-dark),0 0 12px var(--pixel);margin-bottom:1rem;letter-spacing:2px}
   header p{font-size:.8rem;color:var(--sub)}
+  
+  /* Remove glow effect in light mode */
+  [data-theme="light"] header h1{
+    text-shadow:none;
+  }
 
   /* ======== SECTIONS ======== */
   section{padding:3rem 2rem;max-width:1200px;margin:auto}
@@ -416,6 +421,7 @@
     <li><a href="#video">Videos</a></li>
     <li><a href="#links">Links</a></li>
     <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#collaborators">Collaborators</a></li>
   </ul>
   <button class="theme-toggle" id="theme-toggle">Light</button>
 </nav>
@@ -556,9 +562,23 @@
     <!-- ======== EDIT 6: IMAGE PATHS ======== -->
     <img src="images/Tabca front Profile.png" alt="TABCA front view">
     <img src="images/Tabca side profile.png" alt="TABCA side view">
-    <img src="images/TABCA under Construction.png" alt="TABCA under construction">
+    <img src="images/TABCA under Construction.jpeg" alt="TABCA under construction">
     <img src="images/Tabca control Circuit.png" alt="TABCA main circuit">
     <!-- drop more <img> lines here -->
+  </div>
+</section>
+
+<!-- ======== COLLABORATORS ======== -->
+<section id="collaborators">
+  <h2>👥 Collaborators</h2>
+  <div class="description-content">
+    <!-- ======== EDIT: ADD YOUR COLLABORATORS ======== -->
+    <p>
+      This project was developed with the help of amazing collaborators who contributed their time, skills, and expertise.
+    </p>
+    <ul>
+      <li><strong>Marvin Ruka (Best Friend :D)</strong> - Programmer</li>
+    </ul>
   </div>
 </section>
 
