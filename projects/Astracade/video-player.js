@@ -2,21 +2,26 @@
 
 // ======== EDIT: ADD YOUR VIDEO PATHS HERE ========
 const videos = [
-  // {
-  //   title: 'Project Demo',
-  //   type: 'youtube',        // 'youtube' or 'local'
-  //   source: 'dQw4w9WgXcQ'  // YouTube video ID or path to local file
-  // },
   {
     title: 'Astracade - Video Demo 1',
-    type: 'local',
-    source: 'videos/Astracade Test 1.mp4'  // Relative path from project folder
+    type: 'youtube',        // 'youtube' or 'local'
+    source: 'QQIuLD-XCBY'  // YouTube video ID or path to local file
   },
   {
     title: 'Astracade - Video Demo 2',
-    type: 'local',
-    source: 'videos/Astracade Test 2.mp4'  // Relative path from project folder
+    type: 'youtube',        // 'youtube' or 'local'
+    source: 'uOqMnwPt7BM'  // YouTube video ID or path to local file
   },
+  // {
+  //   title: 'Astracade - Video Demo 1',
+  //   type: 'local',
+  //   source: 'videos/Astracade Test 1.mp4'  // Relative path from project folder
+  // },
+  // {
+  //   title: 'Astracade - Video Demo 2',
+  //   type: 'local',
+  //   source: 'videos/Astracade Test 2.mp4'  // Relative path from project folder
+  // },
 ];
 
 // Current video index
