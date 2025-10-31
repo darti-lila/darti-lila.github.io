@@ -18,7 +18,7 @@ Available commands:
     
     about: () => `
 ╔════════════════════════════════════════╗
-║         DARTI LILA - PROFILE          ║
+║         DARTI LILA - PROFILE           ║
 ╚════════════════════════════════════════╝
 
 Role: Electrical & Computer Engineering Student
@@ -42,8 +42,8 @@ soldering, and coding new projects!
         .slice(0, 10);
       
       let output = '\n╔════════════════════════════════════════╗\n';
-      output += '║           SKILL BREAKDOWN             ║\n';
-      output += '╚════════════════════════════════════════╝\n\n';
+      output += '     ║           SKILL BREAKDOWN              ║\n';
+      output += '     ╚════════════════════════════════════════╝\n\n';
       
       sortedSkills.forEach(([skill, count]) => {
         const maxCount = sortedSkills[0][1];
@@ -63,8 +63,8 @@ soldering, and coding new projects!
         .map(h => h.textContent.trim());
       
       let output = '\n╔════════════════════════════════════════╗\n';
-      output += '║         PROJECT PORTFOLIO             ║\n';
-      output += '╚════════════════════════════════════════╝\n\n';
+      output += '     ║         PROJECT PORTFOLIO              ║\n';
+      output += '     ╚════════════════════════════════════════╝\n\n';
       output += '⚡ ELECTRICAL PROJECTS:\n';
       electrical.forEach((proj, i) => output += `  ${i + 1}. ${proj}\n`);
       output += '\n💻 PROGRAMMING PROJECTS:\n';
@@ -76,22 +76,22 @@ soldering, and coding new projects!
     
     contact: () => `
 ╔════════════════════════════════════════╗
-║          CONTACT INFORMATION          ║
+║          CONTACT INFORMATION           ║
 ╚════════════════════════════════════════╝
 
-📧 Email:    dartilila@gmail.com
-💼 LinkedIn: linkedin.com/in/dartilila
-🐙 GitHub:   github.com/darti-lila
+Email:    dartilila@gmail.com
+LinkedIn: linkedin.com/in/dartilila
+GitHub:   github.com/darti-lila
 
 Feel free to reach out for collaborations,
 questions, or just to chat about tech!
     `,
     
     social: () => `
-🌐 SOCIAL MEDIA LINKS:
-  📧 dartilila@gmail.com
-  💼 linkedin.com/in/dartilila
-  🐙 github.com/darti-lila
+  SOCIAL MEDIA LINKS:
+    dartilila@gmail.com
+    linkedin.com/in/dartilila
+    github.com/darti-lila
     `,
     
     clear: () => {
@@ -110,8 +110,8 @@ questions, or just to chat about tech!
     ⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀
     ⠀⠀⠀⠀⠀⠈⠉⠛⠛⠿⠿⠿⠿⠛⠛⠉⠀⠀⠀⠀⠀
 
-🎮 You found the secret! Here's a pixel trophy!
-🏆 Achievement Unlocked: Curious Developer
+    You found the secret! Here's a pixel trophy!
+    Achievement Unlocked: Curious Developer
     `,
   };
   
