@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ======== EDIT 1: PAGE TITLE ======== -->
+  <title>GPS Meter</title>
+
+  <!-- ======== 8-BIT / CRT / PCB THEME (same as index) ======== -->
+  <style>
+  :root{
+    --pcb:#1e2a0e;
+    --copper:#b87333;
+    --copper-lit:#ff9e4a;
+    --pixel:#9cff57;
+    --pixel-dark:#6bcf38;
+    --crt:#0b1405;
+    --grid:rgba(156,255,87,.07);
+    --scan:rgba(156,255,87,.15);
+    --text:#e3ffe3;
+    --sub:#a0c38c;
+    font-size:16px;
+  }
+  
+  /* Light mode theme - warm beige/cream with forest greens */
+  [data-theme="light"]{
+    --pcb:#f5f1e8;
+    --copper:#8d6e63;
+    --copper-lit:#d84315;
+    --pixel:#2e7d32;
+    --pixel-dark:#1b5e20;
+    --crt:#faf8f3;
+    --grid:rgba(46,125,50,.05);
+    --scan:rgba(46,125,50,.08);
+    --text:#2d4a2b;
+    --sub:#558b2f;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{
+    scroll-behavior:smooth;
+  }
+  body{
+    background:var(--pcb) repeating-linear-gradient(0deg,transparent,transparent 2px,var(--grid) 2px,var(--grid) 4px);
+    color:var(--text);
+    font-family:'Press Start 2P',cursive;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  body::after{ /* CRT scanlines */
+    content:"";position:fixed;inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 3px,var(--scan) 3px,var(--scan) 4px);
+    pointer-events:none;z-index:10000;mix-blend-mode:screen;
+    animation:flicker .12s infinite;
+  }
+  @keyframes flicker{0%,100%{opacity:.8}50%{opacity:.6}}
+
+  /* ======== PIXEL NAV - PROJECT SPECIFIC ======== */
+  nav{
+    position:fixed;top:0;left:0;width:100%;
+    background:var(--crt);border-bottom:4px solid var(--copper-lit);
+    z-index:1000;padding:1rem 2rem;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    justify-content:center;
+    gap:1.5rem;
+    flex:1;
+    flex-wrap:wrap;
+  }
+  nav a{
+    color:var(--pixel);
+    font-size:.75rem;
+    text-decoration:none;
+    transition:color .2s;
+  }
+  nav a:hover{color:var(--copper-lit)}
+  
+  /* Theme toggle button */
+  .theme-toggle{
+    background:var(--pixel);color:var(--crt);
+    border:none;padding:.5rem .8rem;
+    font-family:inherit;font-size:.7rem;
+    cursor:pointer;box-shadow:0 3px 0 var(--pixel-dark);
+    transition:all .1s;
+  }
+  .theme-toggle:active{transform:translateY(3px);box-shadow:none}
+  .theme-toggle:hover{background:var(--copper-lit);box-shadow:0 3px 0 var(--copper)}
+
+  /* ======== PIXEL HEADER (project title inside CRT) ======== */
+  header{
+    min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    padding:6rem 2rem 2rem;
+  }
+  .crt-box{
+    background:var(--crt);border:8px solid var(--copper);
+    border-radius:24px;padding:3rem 4rem;text-align:center;
+    box-shadow:inset 0 0 30px 6px rgba(0,0,0,.6),0 0 0 4px rgba(0,0,0,.5),0 0 40px rgba(156,255,87,.4);
+    position:relative;
+  }
+  .crt-box::after{
+    content:"";position:absolute;inset:0;border-radius:24px;
+    background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.08),transparent 60%);
+    pointer-events:none;
+  }
+  header h1{font-size:1.8rem;color:var(--pixel);text-shadow:0 0 6px var(--pixel-dark),0 0 12px var(--pixel);margin-bottom:1rem;letter-spacing:2px}
+  header p{font-size:.8rem;color:var(--sub)}
+  
+  /* Remove glow effect in light mode */
+  [data-theme="light"] header h1{
+    text-shadow:none;
+  }
+
+  /* ======== SECTIONS ======== */
+  section{padding:3rem 2rem;max-width:1200px;margin:auto}
+  h2{font-size:1.2rem;color:var(--pixel);margin-bottom:1rem;letter-spacing:2px}
+  .pixel-btn{
+    display:inline-block;padding:.8rem 1.6rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.8rem;text-transform:uppercase;letter-spacing:2px;
+    border:none;box-shadow:0 4px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    text-decoration:none;
+  }
+  .pixel-btn:active{transform:translateY(4px);box-shadow:none}
+  .pixel-btn:hover{background:var(--copper-lit);box-shadow:0 4px 0 var(--copper)}
+
+  /* ======== DESCRIPTION SECTION ======== */
+  .description-content{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:2rem;
+    line-height:1.8;
+    max-width:1000px;
+    width:100%;
+    margin:0 auto;
+  }
+  .description-content p{
+    margin-bottom:1rem;
+    font-size:.85rem;
+  }
+  .description-content ul{
+    margin-left:2rem;
+    margin-bottom:1rem;
+  }
+  .description-content li{
+    margin-bottom:.5rem;
+    font-size:.85rem;
+  }
+
+  /* ======== PDF / LINKS / PICTURES ======== */
+  .block{
+    background:var(--crt);
+    border:4px solid var(--copper);
+    border-radius:8px;
+    padding:2rem;
+    margin:2rem auto;
+    max-width:1000px;
+    width:100%;
+  }
+  .block > h2{
+    text-align:left;
+    margin-bottom:1rem;
+  }
+  .block > p{
+    font-size:.85rem;
+    line-height:1.8;
+  }
+  .links ul{
+    list-style:none;
+    padding-left:0;
+    max-width:800px;
+    margin:0 auto;
+  }
+  .links li{
+    margin:1rem 0;
+    padding-left:2rem;
+    position:relative;
+  }
+  .links a{
+    color:var(--pixel);
+    text-decoration:none;
+    font-size:.85rem;
+    transition:color .2s;
+    display:inline-block;
+  }
+  .links a:hover{color:var(--copper-lit)}
+  .gallery{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    justify-content:center;
+    max-width:900px;
+    margin:0 auto;
+  }
+  .gallery img{
+    image-rendering:pixelated;
+    border:4px solid var(--copper);
+    border-radius:4px;
+    width:240px;
+    height:240px;
+    object-fit:cover;
+    transition:transform .2s;
+  }
+  .gallery img:hover{transform:scale(1.05)}
+  
+  /* ======== SCHEMATICS SECTION ======== */
+  .schematics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:2rem;
+    margin-top:1.5rem;
+  }
+  .schematic-item{
+    background:rgba(0,0,0,.2);
+    border:3px solid var(--copper);
+    border-radius:8px;
+    padding:1rem;
+    text-align:center;
+    transition:all .3s;
+  }
+  .schematic-item:hover{
+    border-color:var(--copper-lit);
+    transform:translateY(-4px);
+    box-shadow:0 6px 12px rgba(0,0,0,.3);
+  }
+  .schematic-preview{
+    width:100%;
+    height:200px;
+    object-fit:contain;
+    border:2px solid var(--pixel);
+    border-radius:4px;
+    margin-bottom:1rem;
+    background:rgba(255,255,255,.05);
+    padding:.5rem;
+  }
+  .schematic-title{
+    color:var(--pixel);
+    font-size:.85rem;
+    margin-bottom:.8rem;
+    line-height:1.4;
+  }
+  .schematic-download{
+    display:inline-block;
+    padding:.6rem 1.2rem;
+    background:var(--pixel);
+    color:var(--crt);
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;
+    transition:all .1s;
+    text-decoration:none;
+    border-radius:4px;
+  }
+  .schematic-download:active{
+    transform:translateY(3px);
+    box-shadow:none;
+  }
+  .schematic-download:hover{
+    background:var(--copper-lit);
+    box-shadow:0 3px 0 var(--copper);
+  }
+  
+  /* ======== PDF VIEWER - PROPERLY CENTERED ======== */
+  .pdf-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .pdf-viewer-container{
+    background:var(--crt);
+    border:4px solid var(--copper);
+    border-radius:8px;
+    padding:2rem;
+    max-height:700px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+  }
+  .pdf-canvas-wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    width:100%;
+    padding-top:1rem;
+  }
+  #pdf-canvas{
+    display:block;
+    border:2px solid var(--pixel);
+    box-shadow:0 0 10px rgba(156,255,87,.3);
+    max-width:100%;
+    height:auto;
+    margin:0 auto;
+  }
+  .page-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  .pdf-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .pdf-btn:active{transform:translateY(3px);box-shadow:none}
+  .pdf-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
+  }
+  .pdf-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  
+  /* ======== CODE VIEWER - COMPACT WINDOW ======== */
+  .code-viewer-container{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;overflow:hidden;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    max-height:500px;
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+  }
+  .code-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .code-header{
+    background:rgba(0,0,0,.3);padding:.8rem 1rem;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--copper);
+    flex-shrink:0;
+  }
+  .code-filename{
+    color:var(--pixel);font-size:.7rem;
+  }
+  .code-copy-btn{
+    padding:.4rem .8rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.6rem;text-transform:uppercase;
+    border:none;box-shadow:0 2px 0 var(--pixel-dark);
+    cursor:pointer;font-family:inherit;
+    transition:all .1s;
+  }
+  .code-copy-btn:active{transform:translateY(2px);box-shadow:none}
+  .code-copy-btn:hover{background:var(--copper-lit)}
+  .code-nav-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .code-nav-btn:active{transform:translateY(3px);box-shadow:none}
+  .code-nav-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
+  }
+  .code-nav-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  .code-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  .code-content-wrapper{
+    overflow-y:auto;
+    overflow-x:auto;
+    flex:1;
+    background:rgba(0,0,0,.2);
+  }
+  pre{
+    margin:0;padding:1rem;
+    min-height:100%;
+  }
+  code{
+    font-family:'Courier New',monospace;
+    font-size:.75rem;line-height:1.5;
+    color:var(--text);
+    display:block;
+  }
+  
+  /* ======== VIDEO PLAYER - COMPACT WINDOW ======== */
+  .video-container{
+    background:var(--crt);border:4px solid var(--copper);
+    border-radius:8px;padding:1rem;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+    max-width:800px;
+    margin:0 auto;
+  }
+  .video-controls{
+    display:flex;gap:1rem;align-items:center;justify-content:center;
+    flex-wrap:wrap;margin-bottom:1rem;
+  }
+  .video-nav-btn{
+    padding:.6rem 1.2rem;
+    background:var(--pixel);color:var(--crt);
+    font-size:.7rem;text-transform:uppercase;
+    letter-spacing:1px;border:none;
+    box-shadow:0 3px 0 var(--pixel-dark);
+    cursor:pointer;transition:all .1s;
+    font-family:inherit;
+  }
+  .video-nav-btn:active{transform:translateY(3px);box-shadow:none}
+  .video-nav-btn:disabled{
+    background:var(--sub);cursor:not-allowed;
+    box-shadow:0 3px 0 rgba(0,0,0,.3);
+    opacity:0.5;
+  }
+  .video-nav-btn:hover:not(:disabled){
+    background:var(--copper-lit);
+  }
+  .video-info{
+    text-align:center;color:var(--pixel);
+    font-size:.7rem;margin:.5rem 0;
+  }
+  .video-wrapper{
+    position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
+    border:2px solid var(--pixel);
+    box-shadow:0 0 10px rgba(156,255,87,.3);
+  }
+  .video-wrapper iframe,
+  .video-wrapper video{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+  }
+  video{
+    background:#000;
+  }
+  
+  /* ======== CUSTOM SCROLLBAR (like index) ======== */
+  ::-webkit-scrollbar{
+    height:12px;
+    width:12px;
+  }
+  ::-webkit-scrollbar-track{
+    background:var(--crt);
+    border:2px solid var(--copper);
+  }
+  ::-webkit-scrollbar-thumb{
+    background:var(--pixel);
+    border:2px solid var(--copper);
+    border-radius:4px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background:var(--copper-lit);
+  }
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--pixel) var(--crt);
+  }
+  
+  footer{text-align:center;padding:2rem 0;font-size:.6rem;color:var(--sub)}
+  
+  /* ======== RESPONSIVE ======== */
+  @media(max-width:768px){
+    nav{padding:.8rem 1rem}
+    nav ul{gap:1rem;font-size:.65rem}
+    header h1{font-size:1.4rem}
+    .crt-box{padding:2rem}
+    h2{font-size:1rem}
+    section{padding:2rem 1rem}
+  }
+  </style>
+</head>
+
+<body>
+<!-- ======== PIXEL NAV - PROJECT NAVIGATION ======== -->
+<nav>
+  <ul>
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#docs">Documentation</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#video">Videos</a></li>
+    <li><a href="#schematics">Schematics</a></li>
+    <li><a href="#links">Links</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#collaborators">Collaborators</a></li>
+  </ul>
+  <button class="theme-toggle" id="theme-toggle">Light</button>
+</nav>
+
+<!-- ======== PROJECT TITLE HEADER ======== -->
+<header>
+  <div class="crt-box">
+    <!-- ======== EDIT 2: PROJECT TITLE ======== -->
+    <h1>GPS Meter</h1>
+    <!-- ======== EDIT 3: SHORT TAGLINE ======== -->
+    <p>GPS based distance measurement device</p>
+  </div>
+</header>
+
+<!-- ======== DESCRIPTION SECTION ======== -->
+<section id="description">
+  <h2>Project Description</h2>
+  <div class="description-content">
+    <!-- ======== EDIT: ADD YOUR PROJECT DESCRIPTION ======== -->
+    <p>
+      The GPS Distance Meter is a portable handheld device designed to measure geographic distances 
+      accurately using satellite positioning technology, eliminating the need for traditional measuring 
+      tools like tape measures or laser devices.
+    </p>
+    <p>The GPS Distance Meter is a precision measurement tool capable of calculating distances between two 
+      geographic points using GPS satellite triangulation. The device realizes this by using a NEO-6M GPS 
+      module connected to an Arduino Nano microcontroller that processes satellite signals and calculates 
+      distances using the Haversine formula. The beauty of the GPS Distance Meter is that it's completely 
+      portable, powered by a 9V battery and housed in a custom 3D-printed case with a simple two-button interface 
+      (START and STOP). The GPS Distance Meter has a 16x2 LCD display that shows real-time coordinates and 
+      calculated distances, making it easy to use in the field for surveying, outdoor sports, or geodetic work.</p>
+    <p>
+      <strong>Key Features:</strong>
+    </p>
+    <ul>
+      <li>Satellite-based distance measurement using GPS triangulation (requires 4+ satellites)</li>
+      <li>Two-button operation: START to mark initial position, STOP to calculate distance</li>
+      <li>Portable 3D-printed case with 9V battery power</li>
+      <li>Measurement accuracy comparable to commercial GPS devices (tested against Garmin eTREX and Google Maps)</li>
+    </ul>
+    <p>
+      This was a school project I built with Albion Spaho for our Electronic Measurements course at Harry Fultz Institute 
+      during the 2022-2023 academic year. It was challenging because GPS calibration takes time 
+      (waiting for satellite locks) and we had to account for various error sources like signal interference, 
+      atmospheric conditions, and multipath effects. We tested it extensively in different weather conditions 
+      (sunny vs. cloudy) and compared our results against professional devices—our measurements were consistently 
+      within 1 meter of reference values.
+    </p>
+  </div>
+</section>
+
+<!-- ======== DOCUMENTATION WITH PDF VIEWER ======== -->
+<section id="docs" class="block">
+  <h2>Documentation</h2>
+  <p style="margin-bottom:1rem;">View the full report below or download it.</p>
+  
+  <!-- PDF Controls -->
+  <div class="pdf-controls">
+    <button class="pdf-btn" id="prev-page">◀ Prev</button>
+    <span class="page-info">
+      Page <span id="page-num">1</span> / <span id="page-count">-</span>
+    </span>
+    <button class="pdf-btn" id="next-page">Next ▶</button>
+    <!-- ======== EDIT 4: PDF PATH ======== -->
+    <a class="pixel-btn" href="GPS Distance Meter.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
+  </div>
+  
+  <!-- PDF Viewer -->
+  <div class="pdf-viewer-container">
+    <div class="pdf-canvas-wrapper">
+      <canvas id="pdf-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CODE VIEWER ======== -->
+<section id="code" class="block">
+  <h2>Source Code</h2>
+  <p style="margin-bottom:1rem;">Browse through the project code files.</p>
+  
+  <!-- Code Navigation Controls -->
+  <div class="code-controls">
+    <button class="code-nav-btn" id="prev-code">◀ Prev</button>
+    <span class="code-info">
+      File <span id="code-num">1</span> / <span id="code-count">-</span>
+    </span>
+    <button class="code-nav-btn" id="next-code">Next ▶</button>
+  </div>
+  
+  <!-- Code Container with Scroll -->
+  <div class="code-viewer-container" id="code-display">
+    <!-- Code will be loaded by code-viewer.js -->
+  </div>
+</section>
+
+<!-- ======== VIDEO PLAYER ======== -->
+<section id="video" class="block">
+  <h2>Demo Videos</h2>
+  <p style="margin-bottom:1rem;">Watch the project demonstrations.</p>
+  <p> Currently there are no videos available for this project.</p>
+  <!-- Video Navigation Controls -->
+  <div class="video-controls">
+    <button class="video-nav-btn" id="prev-video">◀ Prev</button>
+    <span class="video-info">
+      Video <span id="video-num">1</span> / <span id="video-count">-</span>
+    </span>
+    <button class="video-nav-btn" id="next-video">Next ▶</button>
+  </div>
+  
+  <!-- Video Container -->
+  <div class="video-container">
+    <div class="video-wrapper" id="video-display">
+      <!-- Videos will be loaded by video-player.js -->
+    </div>
+  </div>
+</section>
+
+<!-- ======== SCHEMATICS ======== -->
+<section id="schematics" class="block">
+  <h2>Schematics</h2>
+  <p style="margin-bottom:1.5rem;">Circuit diagrams and technical schematics for the project. Click to view or download.</p>
+  <div class="schematics-grid">
+    <!-- ======== EDIT: ADD YOUR SCHEMATICS ======== -->
+    
+    <!-- Schematic Item 1 -->
+    <div class="schematic-item">
+      <img src="schematics/Gps distance meter schematic1.png" alt="GPS Distance meter circuit" class="schematic-preview">
+      <div class="schematic-title">Electrical Circuit</div>
+      <a href="schematics/Gps distance meter schematic1.png" download class="schematic-download">⬇ Download PDF</a>
+    </div>
+    
+    <!-- Schematic Item 2 -->
+    <div class="schematic-item">
+      <img src="schematics/Gps distance meter visual schematic.png" alt="GPS Distance meter visual schematic" class="schematic-preview">
+      <div class="schematic-title">Visual Schematic</div>
+      <a href="schematics/Gps distance meter visual schematic.png" download class="schematic-download">⬇ Download PDF</a>
+    </div>
+    
+    <!-- Schematic Item 3 -->
+    <!-- <div class="schematic-item">
+      <img src="schematics/main-circuit.png" alt="Main Circuit Schematic" class="schematic-preview">
+      <div class="schematic-title">Main Control Circuit</div>
+      <a href="schematics/main-circuit.pdf" download class="schematic-download">⬇ Download PDF</a>
+    </div> -->
+    
+  </div>
+</section>
+
+<!-- ======== LINKS ======== -->
+<section id="links" class="block links">
+  <h2>Links & Resources</h2>
+  <ul>
+    <!-- ======== EDIT 5: YOUR LINKS ======== -->
+     <p>Currently no additional links available for this project.</p>
+    <!-- <li><a href="https://github.com/YOU/REPO" target="_blank">Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">Demo video (YouTube)</a></li>
+    <li><a href="#" target="_blank">Technical specifications</a></li>
+    <li><a href="#" target="_blank">Additional resources</a></li> -->
+    <!-- add more <li> lines here -->
+  </ul>
+</section>
+
+<!-- ======== PICTURES ======== -->
+<section id="gallery" class="block">
+  <h2>Photos / Screenshots</h2>
+  <div class="gallery">
+    <!-- ======== EDIT 6: IMAGE PATHS ======== -->
+    <img src="images/GPS meter test 1.jpg" alt="GPS meter test outdoors 1">
+    <img src="images/GPS meter test 2.jpg" alt="GPS meter test outdoors 2">
+    <!-- drop more <img> lines here -->
+  </div>
+</section>
+
+<!-- ======== COLLABORATORS ======== -->
+<section id="collaborators">
+  <h2>Collaborators</h2>
+  <div class="description-content">
+    <!-- ======== EDIT: ADD YOUR COLLABORATORS ======== -->
+    <p>
+      This project was developed with the help of amazing collaborators who contributed their time, skills, and expertise.
+    </p>
+    <ul>
+      <li><strong>Albion Spaho</strong> - Research and 3D design</li>
+      <li><strong>Erlis Ciko</strong> - (Special thanks) Helped me write the code</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+  &copy; 2025 Darti Lila – Made with love and care
+</footer>
+
+<!-- ======== PDF.JS LIBRARY ======== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- ======== EXTERNAL SCRIPTS ======== -->
+<script src="pdf-viewer.js"></script>
+<script src="code-viewer.js"></script>
+<script src="video-player.js"></script>
+
+<!-- ======== THEME TOGGLE ======== -->
+<script>
+/* ===== THEME TOGGLE ===== */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  
+  // Check for saved theme preference or default to 'dark'
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', currentTheme);
+  updateToggleButton(currentTheme);
+  
+  // Toggle theme on button click
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleButton(newTheme);
+  });
+  
+  function updateToggleButton(theme) {
+    if (theme === 'dark') {
+      toggleBtn.textContent = 'Light';
+    } else {
+      toggleBtn.textContent = 'Dark';
+    }
+  }
+}
+
+// Initialize theme toggle
+initThemeToggle();
+</script>
+</body>
+</html>
