@@ -21,7 +21,7 @@ Available commands:
     
     about: () => `
 ╔════════════════════════════════════════╗
-║         DARTI LILA - PROFILE           ║
+║         DARTI LILA - PROFILE                          ║
 ╚════════════════════════════════════════╝
 
 Role: Electrical & Computer Engineering Student
@@ -108,7 +108,7 @@ SOCIAL MEDIA LINKS:
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
-      return `Theme switched to ${newTheme} mode! ✨`;
+      return `Theme switched to ${newTheme} mode!`;
     },
     
     minimize: () => {
