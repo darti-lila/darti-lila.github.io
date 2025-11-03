@@ -14,6 +14,8 @@ Available commands:
   clear      - Clear terminal
   easteregg  - Find a hidden surprise
   social     - Show social media links
+  theme      - Toggle light/dark theme
+  minimize   - Minimize terminal (or use Ctrl+\`)
     `,
     
     about: () => `
@@ -42,15 +44,15 @@ soldering, and coding new projects!
         .slice(0, 10);
       
       let output = '\n╔════════════════════════════════════════╗\n';
-      output += '     ║           SKILL BREAKDOWN              ║\n';
-      output += '     ╚════════════════════════════════════════╝\n\n';
+      output += '║           SKILL BREAKDOWN              ║\n';
+      output += '╚════════════════════════════════════════╝\n\n';
       
       sortedSkills.forEach(([skill, count]) => {
         const maxCount = sortedSkills[0][1];
         const percentage = Math.round((count / maxCount) * 100);
         const bars = '█'.repeat(Math.floor(percentage / 10));
         const spaces = '░'.repeat(10 - Math.floor(percentage / 10));
-        output += `${skill.padEnd(20)} [${bars}${spaces}] ${count} projects\n`;
+        output += `  ${skill.padEnd(20)} [${bars}${spaces}] ${count} projects\n`;
       });
       
       return output;
@@ -63,11 +65,11 @@ soldering, and coding new projects!
         .map(h => h.textContent.trim());
       
       let output = '\n╔════════════════════════════════════════╗\n';
-      output += '     ║         PROJECT PORTFOLIO              ║\n';
-      output += '     ╚════════════════════════════════════════╝\n\n';
-      output += '⚡ ELECTRICAL PROJECTS:\n';
+      output += '║         PROJECT PORTFOLIO              ║\n';
+      output += '╚════════════════════════════════════════╝\n\n';
+      output += 'ELECTRICAL PROJECTS:\n';
       electrical.forEach((proj, i) => output += `  ${i + 1}. ${proj}\n`);
-      output += '\n💻 PROGRAMMING PROJECTS:\n';
+      output += '\nPROGRAMMING PROJECTS:\n';
       programming.forEach((proj, i) => output += `  ${i + 1}. ${proj}\n`);
       output += `\nTotal: ${electrical.length + programming.length} projects\n`;
       
@@ -88,15 +90,30 @@ questions, or just to chat about tech!
     `,
     
     social: () => `
-  SOCIAL MEDIA LINKS:
-    dartilila@gmail.com
-    linkedin.com/in/dartilila
-    github.com/darti-lila
+SOCIAL MEDIA LINKS:
+  dartilila@gmail.com
+  linkedin.com/in/dartilila
+  github.com/darti-lila
     `,
     
     clear: () => {
       output.innerHTML = '';
       return '';
+    },
+    
+    theme: () => {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      return `Theme switched to ${newTheme} mode! ✨`;
+    },
+    
+    minimize: () => {
+      const terminalFloat = document.getElementById('terminal-float');
+      terminalFloat.classList.toggle('minimized');
+      return 'Terminal minimized. Click header or press Ctrl+` to restore.';
     },
     
     easteregg: () => `
@@ -112,12 +129,67 @@ questions, or just to chat about tech!
 
     You found the secret! Here's a pixel trophy!
     Achievement Unlocked: Curious Developer
+
+    Fun fact: This portfolio has ${document.querySelectorAll('.project-card').length} projects!
     `,
   };
+  
+  // Command history
+  const commandHistory = [];
+  let historyIndex = -1;
+  
+  input.addEventListener('keydown', (e) => {
+    // Up arrow - previous command
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+        historyIndex++;
+        input.value = commandHistory[commandHistory.length - 1 - historyIndex];
+      }
+    }
+    // Down arrow - next command
+    else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        historyIndex--;
+        input.value = commandHistory[commandHistory.length - 1 - historyIndex];
+      } else if (historyIndex === 0) {
+        historyIndex = -1;
+        input.value = '';
+      }
+    }
+    // Tab - autocomplete
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      const partial = input.value.trim().toLowerCase();
+      if (partial) {
+        const matches = Object.keys(commands).filter(cmd => cmd.startsWith(partial));
+        if (matches.length === 1) {
+          input.value = matches[0];
+        } else if (matches.length > 1) {
+          const matchLine = document.createElement('div');
+          matchLine.className = 'terminal-line';
+          matchLine.textContent = `Possible commands: ${matches.join(', ')}`;
+          output.appendChild(matchLine);
+          output.scrollTop = output.scrollHeight;
+        }
+      }
+    }
+  });
   
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       const command = input.value.trim().toLowerCase();
+      
+      // Add to history
+      if (command && command !== commandHistory[commandHistory.length - 1]) {
+        commandHistory.push(command);
+        // Keep only last 50 commands
+        if (commandHistory.length > 50) {
+          commandHistory.shift();
+        }
+      }
+      historyIndex = -1;
       
       // Display command
       const commandLine = document.createElement('div');
@@ -128,16 +200,17 @@ questions, or just to chat about tech!
       // Execute command
       const resultLine = document.createElement('div');
       resultLine.className = 'terminal-line';
+      resultLine.style.whiteSpace = 'pre-wrap'; // Preserve formatting
       
       if (command === '') {
         // Do nothing for empty command
       } else if (commands[command]) {
         resultLine.textContent = commands[command]();
       } else {
-        resultLine.textContent = `Command not found: ${command}\nType 'help' for available commands.`;
+        resultLine.innerHTML = `<span style="color: var(--copper-lit);">Command not found: ${command}</span>\nType 'help' for available commands.`;
       }
       
-      if (resultLine.textContent) {
+      if (resultLine.textContent || resultLine.innerHTML) {
         output.appendChild(resultLine);
       }
       
@@ -146,4 +219,13 @@ questions, or just to chat about tech!
       output.scrollTop = output.scrollHeight;
     }
   });
+  
+  // Auto-focus on terminal when it's visible
+  const terminalFloat = document.getElementById('terminal-float');
+  const observer = new MutationObserver(() => {
+    if (!terminalFloat.classList.contains('minimized')) {
+      input.focus();
+    }
+  });
+  observer.observe(terminalFloat, { attributes: true, attributeFilter: ['class'] });
 }

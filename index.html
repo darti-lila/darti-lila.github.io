@@ -18,10 +18,9 @@
     --scan:rgba(156,255,87,.15);
     --text:#e3ffe3;
     --sub:#a0c38c;
-    font-size:16px; /* base for pixel scaling */
+    font-size:16px;
   }
   
-  /* Light mode theme */
   [data-theme="light"]{
     --pcb:#e8f5e9;
     --copper:#8d6e63;
@@ -38,19 +37,17 @@
   body{
     background:var(--pcb) repeating-linear-gradient(0deg,transparent,transparent 2px,var(--grid) 2px,var(--grid) 4px);
     color:var(--text);
-    font-family: 'Press Start 2P', cursive; /* classic 8-bit font */
+    font-family: 'Press Start 2P', cursive;
     line-height:1.6;
     overflow-x:hidden;
   }
   
   /* ======== CUSTOM PIXELATED SCROLLBAR ======== */
-  /* Firefox */
   * {
     scrollbar-width: thick;
     scrollbar-color: var(--pixel) var(--crt);
   }
   
-  /* Chrome, Edge, Safari */
   ::-webkit-scrollbar {
     width: 16px;
     height: 16px;
@@ -87,7 +84,6 @@
     border: 3px solid var(--copper);
   }
   
-  /* Pixelated buttons (arrows) */
   ::-webkit-scrollbar-button {
     background: var(--pixel);
     border: 3px solid var(--copper);
@@ -98,10 +94,9 @@
   ::-webkit-scrollbar-button:hover {
     background: var(--copper-lit);
   }
-  /* Google font loader */
+  
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-  /* CRT scanlines */
   body::after{
     content:"";position:fixed;inset:0;
     background:repeating-linear-gradient(0deg,transparent,transparent 3px,var(--scan) 3px,var(--scan) 4px);
@@ -121,7 +116,6 @@
   nav a{color:var(--pixel);font-size:.8rem;text-decoration:none}
   nav a:hover{color:var(--copper-lit)}
   
-  /* Theme toggle button */
   .theme-toggle{
     background:var(--pixel);color:var(--crt);
     border:none;padding:.5rem .8rem;
@@ -132,7 +126,6 @@
   .theme-toggle:active{transform:translateY(3px);box-shadow:none}
   .theme-toggle:hover{background:var(--copper-lit);box-shadow:0 3px 0 var(--copper)}
 
-  /* ======== PIXEL HERO (centred block) ======== --> */
   .hero{
     min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
     padding:2rem;
@@ -146,7 +139,7 @@
       0 0 40px rgba(156,255,87,.4);
     position:relative;
   }
-  .crt-box::after{ /* rounded screen glare */
+  .crt-box::after{
     content:"";position:absolute;inset:0;border-radius:24px;
     background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.08),transparent 60%);
     pointer-events:none;
@@ -163,15 +156,13 @@
     background:var(--pixel);color:var(--crt);
     font-size:.9rem;text-transform:uppercase;letter-spacing:2px;
     border:none;box-shadow:0 4px 0 var(--pixel-dark);
-    cursor:pointer;transition:all .1s;
+    cursor:pointer;transition:all .1s;text-decoration:none;
   }
   .pixel-btn:active{transform:translateY(4px);box-shadow:none}
 
-  /* ======== SECTIONS ======== --> */
   section{padding:5rem 2rem;max-width:1000px;margin:auto}
   .section-title{font-size:1.6rem;color:var(--pixel);text-align:center;margin-bottom:3rem;letter-spacing:2px}
 
-  /* ======== PIXEL PROJECT CARDS ======== --> */
   .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem}
   .project-card{
     background:var(--crt);border:4px solid var(--copper);
@@ -186,7 +177,6 @@
     font-size:.6rem;border:2px solid var(--pixel);color:var(--pixel);
   }
 
-  /* ======== ABOUT / CONTACT ======== --> */
   .about-content{display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center}
   .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
   .skill-bar{background:rgba(0,0,0,.4);height:24px;border:2px solid var(--copper);border-radius:4px;overflow:hidden}
@@ -199,37 +189,163 @@
 
   footer{text-align:center;padding:2rem 0;font-size:.7rem;color:var(--sub)}
   .social-links{display:flex;justify-content:center;gap:2rem;margin-top:1rem}
-  .social-links a{color:var(--pixel);font-size:1.2rem}
+  .social-links a{color:var(--pixel);font-size:1.2rem;text-decoration:none}
 
-  /* ======== TERMINAL ======== */
-  .terminal-box{
-    background:var(--crt);border:4px solid var(--copper);
-    border-radius:8px;padding:1.5rem;
-    max-width:800px;margin:auto;
-    box-shadow:inset 0 0 20px rgba(0,0,0,.5);
+  /* ======== FLOATING TERMINAL ======== */
+  .terminal-float {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 600px;
+    max-width: calc(100vw - 40px);
+    z-index: 9999;
+    transition: transform 0.3s ease, height 0.3s ease;
   }
-  .terminal-output{
-    min-height:300px;max-height:400px;overflow-y:auto;
-    font-size:.75rem;line-height:1.8;margin-bottom:1rem;
-    color:var(--pixel);
+  
+  .terminal-float.minimized {
+    transform: translateY(calc(100% - 40px));
   }
-  .terminal-line{margin-bottom:.5rem}
-  .terminal-prompt{color:var(--copper-lit)}
-  .terminal-input-line{display:flex;align-items:center;gap:.5rem}
-  .terminal-input-line span{color:var(--copper-lit)}
-  .terminal-input{
-    flex:1;background:transparent;border:none;
-    color:var(--pixel);font-family:inherit;font-size:.75rem;
-    outline:none;
+  
+  .terminal-header {
+    background: var(--crt);
+    border: 4px solid var(--copper);
+    border-bottom: none;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
   }
-  .terminal-cursor{
-    display:inline-block;width:8px;height:14px;
-    background:var(--pixel);animation:blink .8s infinite;
+  
+  .terminal-title {
+    color: var(--pixel);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
-  .terminal-help{color:var(--sub);font-size:.7rem;margin-top:1rem}
+  
+  .terminal-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .terminal-btn {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--copper);
+    background: var(--pixel);
+    cursor: pointer;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+  }
+  
+  .terminal-btn:hover {
+    background: var(--copper-lit);
+    border-color: var(--pixel);
+  }
+  
+  .terminal-btn:active {
+    transform: scale(0.95);
+  }
 
-  @media(max-width:768px){.about-content{grid-template-columns:1fr}}
+  .terminal-box {
+    background: var(--crt);
+    border: 4px solid var(--copper);
+    border-top: none;
+    padding: 1rem;
+    box-shadow: 
+      inset 0 0 20px rgba(0,0,0,.5),
+      0 -10px 30px rgba(0,0,0,.5);
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 0.7rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: var(--pixel);
+    padding-right: 0.5rem;
+  }
+  
+  .terminal-line {
+    margin-bottom: 0.3rem;
+    word-wrap: break-word;
+  }
+  
+  .terminal-prompt {
+    color: var(--copper-lit);
+  }
+  
+  .terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-top: 2px solid var(--copper);
+    padding-top: 0.5rem;
+  }
+  
+  .terminal-input-line span {
+    color: var(--copper-lit);
+    font-size: 0.7rem;
+  }
+  
+  .terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--pixel);
+    font-family: inherit;
+    font-size: 0.7rem;
+    outline: none;
+  }
+  
+  .terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--pixel);
+    animation: blink 0.8s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  /* Terminal scrollbar */
+  .terminal-output::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .terminal-output::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--copper);
+  }
+  
+  .terminal-output::-webkit-scrollbar-thumb {
+    background: var(--pixel);
+    border: 1px solid var(--copper-lit);
+  }
+
+  @media(max-width:768px){
+    .about-content{grid-template-columns:1fr}
+    .terminal-float {
+      right: 10px;
+      width: calc(100vw - 20px);
+    }
+    .terminal-box {
+      height: 300px;
+    }
+  }
 </style>
 </head>
 
@@ -241,7 +357,6 @@
     <li><a href="#electrical">Electrical</a></li>
     <li><a href="#programming">Programming</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#terminal">Terminal</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="theme-toggle" id="theme-toggle">🌙</button>
@@ -273,7 +388,7 @@
     <div class="project-card" data-url="https://devpost.com/software/ai-automated-document-sorter">
       <h3>Smart Sorter</h3>
       <p>AI Automated Document Sorter</p>
-      <h66>(Devpost Link)</h6>
+      <h6>(Devpost Link)</h6>
       <div class="tags"><span class="tag">Raspberry Pi</span><span class="tag">Computer Vision</span><span class="tag">Neural Network</span></div>
     </div>
     <div class="project-card" data-url="projects/Seaorb/seaorb.html">
@@ -294,14 +409,13 @@
     <div class="project-card" data-url="projects/S_C_O_T_T/scott.html">
       <h3>S.C.O.T.T</h3>
       <p>Stationary Controlled Omnidirectional Turnable Talon</p>
-      <div class="tags"><span class="tag">Ardunio</span><span class="tag">Robotic Arm</span><span class="tag">Power Control</span></div>
+      <div class="tags"><span class="tag">Arduino</span><span class="tag">Robotic Arm</span><span class="tag">Power Control</span></div>
     </div>
     <div class="project-card" data-url="projects/T_A_B_C_A/tabca.html">
       <h3>T.A.B.C.A</h3>
       <p>Temperature AND Barometric Calculation Assistant</p>
       <div class="tags"><span class="tag">Arduino</span><span class="tag">Sensors</span><span class="tag">Solar Tracking</span></div>
     </div>
-    
   </div>
 </section>
 
@@ -334,28 +448,7 @@
     <div>
       <h3 style="font-size:1rem;margin-bottom:1rem;">Skills (from projects)</h3>
       <div class="skills-grid" id="skills-container">
-        <!-- Skills generated dynamically from project tags -->
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======== TERMINAL ======== -->
-<section id="terminal">
-  <h2 class="section-title">Interactive Terminal</h2>
-  <div class="terminal-box">
-    <div class="terminal-output" id="terminal-output">
-      <div class="terminal-line">
-        <span class="terminal-prompt">darti@portfolio:~$</span> Welcome to Darti's Portfolio Terminal v1.0
-      </div>
-      <div class="terminal-line">Type 'help' to see available commands.</div>
-    </div>
-    <div class="terminal-input-line">
-      <span>darti@portfolio:~$</span>
-      <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off">
-    </div>
-    <div class="terminal-help">
-      Try: help | about | skills | projects | contact | clear | easteregg (WIP)
     </div>
   </div>
 </section>
@@ -375,40 +468,60 @@
 <footer>
   <p>&copy; 2025 Darti Lila</p>
   <div class="social-links">
-    <a href="dartilila@gmail.com">Email</a>
-    <a href="https://www.linkedin.com/in/dartilila/" target="_blank">linkedin</a>
-    <a href="https://github.com/darti-lila/" target="_blank">github</a>
+    <a href="mailto:dartilila@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/dartilila/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/darti-lila/" target="_blank">GitHub</a>
   </div>
 </footer>
+
+<!-- ======== FLOATING TERMINAL ======== -->
+<div class="terminal-float" id="terminal-float">
+  <div class="terminal-header" id="terminal-header">
+    <div class="terminal-title">
+      <span>▶</span>
+      <span>darti@portfolio:~$</span>
+    </div>
+    <div class="terminal-controls">
+      <div class="terminal-btn" id="terminal-minimize" title="Minimize">_</div>
+      <div class="terminal-btn" id="terminal-close" title="Close">✕</div>
+    </div>
+  </div>
+  <div class="terminal-box">
+    <div class="terminal-output" id="terminal-output">
+      <div class="terminal-line">
+        <span class="terminal-prompt">darti@portfolio:~$</span> Welcome to Darti's Portfolio Terminal v1.0
+      </div>
+      <div class="terminal-line">Type 'help' to see available commands.</div>
+    </div>
+    <div class="terminal-input-line">
+      <span>darti@portfolio:~$</span>
+      <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off">
+    </div>
+  </div>
+</div>
 
 <!-- ======== SCRIPTS ======== -->
 <script src="terminal.js"></script>
 <script>
 /* ===== GENERATE SKILLS FROM PROJECT TAGS ===== */
 function generateSkills() {
-  // Count all tags across all projects
   const tagCount = {};
   
-  // Get all tag elements
   document.querySelectorAll('.tag').forEach(tag => {
     const skill = tag.textContent.trim();
     tagCount[skill] = (tagCount[skill] || 0) + 1;
   });
   
-  // Sort by count (descending) and get top skills
   const sortedSkills = Object.entries(tagCount)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 8); // Show top 8 skills
+    .slice(0, 8);
   
-  // Find max count for percentage calculation
   const maxCount = sortedSkills[0]?.[1] || 1;
   
-  // Generate skill bars
   const container = document.getElementById('skills-container');
   container.innerHTML = '';
   
   sortedSkills.forEach(([skill, count]) => {
-    // Calculate percentage (scaled so top skill is 90-100%)
     const percentage = Math.round((count / maxCount) * 90) + 10;
     
     const skillBar = document.createElement('div');
@@ -427,12 +540,10 @@ function initThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle');
   const html = document.documentElement;
   
-  // Check for saved theme preference or default to 'dark'
   const currentTheme = localStorage.getItem('theme') || 'dark';
   html.setAttribute('data-theme', currentTheme);
   updateToggleButton(currentTheme);
   
-  // Toggle theme on button click
   toggleBtn.addEventListener('click', () => {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -443,12 +554,68 @@ function initThemeToggle() {
   });
   
   function updateToggleButton(theme) {
-    if (theme === 'dark') {
-      toggleBtn.innerHTML = 'Light';
+    toggleBtn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+  }
+}
+
+/* ===== TERMINAL CONTROLS ===== */
+function initTerminalControls() {
+  const terminalFloat = document.getElementById('terminal-float');
+  const terminalHeader = document.getElementById('terminal-header');
+  const minimizeBtn = document.getElementById('terminal-minimize');
+  const closeBtn = document.getElementById('terminal-close');
+  const terminalInput = document.getElementById('terminal-input');
+  
+  let isMinimized = false;
+  let isClosed = false;
+  
+  // Toggle minimize on header click
+  terminalHeader.addEventListener('click', (e) => {
+    if (e.target.closest('.terminal-btn')) return;
+    toggleMinimize();
+  });
+  
+  // Minimize button
+  minimizeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMinimize();
+  });
+  
+  // Close button
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    terminalFloat.style.display = 'none';
+    isClosed = true;
+  });
+  
+  function toggleMinimize() {
+    isMinimized = !isMinimized;
+    if (isMinimized) {
+      terminalFloat.classList.add('minimized');
     } else {
-      toggleBtn.innerHTML = 'Dark';
+      terminalFloat.classList.remove('minimized');
+      terminalInput.focus();
     }
   }
+  
+  // Keyboard shortcut: Ctrl + ` to toggle terminal
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === '`') {
+      e.preventDefault();
+      if (isClosed) {
+        terminalFloat.style.display = 'block';
+        isClosed = false;
+      }
+      toggleMinimize();
+    }
+  });
+  
+  // Focus input when clicking in terminal
+  document.getElementById('terminal-output').addEventListener('click', () => {
+    if (!isMinimized) {
+      terminalInput.focus();
+    }
+  });
 }
 
 /* ===== CLICKABLE CARDS ===== */
@@ -462,6 +629,7 @@ window.addEventListener('DOMContentLoaded', () => {
   generateSkills();
   initThemeToggle();
   initTerminal();
+  initTerminalControls();
 });
 </script>
 </body>
