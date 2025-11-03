@@ -1,6 +1,6 @@
 /* ===== PDF VIEWER ===== */
 
-const PDF_URL = 'Photomalus.pdf';
+const PDF_URL = 'SEAORB - Your eye under the sea.pdf';
 
 // PDF.js setup
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';

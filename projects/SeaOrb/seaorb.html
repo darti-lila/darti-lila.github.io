@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <!-- ======== EDIT 1: PAGE TITLE ======== -->
-  <title>Pulse</title>
+  <title>SeaOrb</title>
 
   <!-- ======== 8-BIT / CRT / PCB THEME (same as index) ======== -->
   <style>
@@ -499,9 +499,9 @@
 <header>
   <div class="crt-box">
     <!-- ======== EDIT 2: PROJECT TITLE ======== -->
-    <h1>Pulse</h1>
+    <h1>SeaOrb</h1>
     <!-- ======== EDIT 3: SHORT TAGLINE ======== -->
-    <p>Transcutanious IoT tracking of glucose and heartrate monitoring</p>
+    <p>Serial controlled submarine</p>
   </div>
 </header>
 
@@ -511,50 +511,50 @@
   <div class="description-content">
     <!-- ======== EDIT: ADD YOUR PROJECT DESCRIPTION ======== -->
     <p>
-      The Transcutaneous Vital Signs Monitoring Device is a non-invasive wearable health monitor designed 
-      to continuously track heart rate, blood oxygen saturation (SpO₂), and glucose levels using 
-      near-infrared spectroscopy, eliminating the need for painful finger-prick blood tests.
+      SEAORB (Your Eye Underwater) is a DIY remotely operated underwater vehicle (ROV) 
+      designed to explore Albanian marine fauna using GPS navigation, real-time camera streaming, 
+      and AI-powered species identification, making marine biology research accessible and non-invasive.
     </p>
-    <p>The Transcutaneous Vital Signs Monitoring Device is a comprehensive health tracking system capable 
-      of measuring three critical vital signs simultaneously through optical sensing technology. 
-      The device realizes this by using two MAX30102 biosensors connected to an ESP32 microcontroller 
-      that processes photoplethysmography (PPG) signals in real-time. The beauty of this device is that 
-      it's completely non-invasive—users simply place their finger on the sensor, and the 880nm 
-      near-infrared light penetrates the skin to detect changes in blood flow, oxygen saturation, 
-      and glucose levels without any needles. The device has both local display via an OLED screen and 
-      cloud connectivity through a custom web dashboard called "VitalView" that logs historical data, 
-      displays live graphs, and provides weekly health summaries that can be shared with healthcare 
-      providers.</p>
+    <p>SEAORB is a modular underwater exploration platform capable of diving, navigating, 
+      and documenting marine life through remote control. The submarine realizes this by using a ballast 
+      system with water pumps to control depth (filling 1L chambers in 40 seconds for submersion), 
+      four DC motors with counter-rotating propellers for 3D mobility, and a 1MP camera with dual LED 
+      systems (ambient and focus lights) for underwater visibility. The beauty of SEAORB is that it's 
+      completely open-source and built from accessible materials—PLA and PP plastic tubes printed on 
+      standard 3D printers, off-the-shelf electronics controlled by Arduino Nano, and a web interface 
+      for real-time control via USB-Ethernet connection up to 10 meters. SEAORB has a modular chamber 
+      design with separate compartments for power (dual 12V lithium batteries), water ballast, and 
+      electronics, allowing for easy maintenance and future upgrades like AI fauna recognition systems.</p>
     <p>
       <strong>Key Features:</strong>
     </p>
     <ul>
-      <li>Dual MAX30102 sensor configuration for enhanced accuracy and data redundancy</li>
-      <li>Real-time monitoring of heart rate (BPM), blood oxygen saturation (SpO₂%), and glucose levels (mg/dL)</li>
-      <li>ESP32-powered with WiFi connectivity for cloud data synchronization</li>
-      <li>Custom web dashboard with patient information input, live vital signs display, and trend analysis</li>
-      <li>Portable battery-powered design with custom PCB for compact form factor</li>
+      <li>Variable depth ballast system using water pumps (12.5ml/s flow rate per pump)</li>
+      <li>Four-motor propulsion with 5-blade propellers at 500 RPM for precise 3D navigation</li>
+      <li>Web-based control interface with keyboard controls for motors, pumps, and lights</li>
+      <li>Arduino Nano microcontroller with L298N motor drivers and relay-controlled circuits</li>
+      <li>Real-time camera streaming (1MP resolution) via USB-Ethernet hybrid connection</li>
     </ul>
     <p>
-      This was a 10-week freshman engineering design project I completed with my team 
-      (Ashley Benjamin, Earli Ismaili, Hakan Alex Kucukhuseyin, and Esila Özdemir) at Drexel University 
-      during Spring 2025. The biggest challenge was getting both sensors to work simultaneously 
-      without interference—we had to completely redesign our circuit and rewrite the code in Week 7 
-      when we discovered accuracy issues. My role focused on circuit design, PCB layout 
-      (which we actually manufactured!), and programming the glucose monitoring algorithm in the 
-      final week. The project addresses a real problem: according to MIT research, more than half of 
-      diabetic patients don't test their glucose often enough because of the pain and inconvenience of 
-      needle pricks.
+      This was my high school senior project at Harry Fultz Institute in Albania (2022-2023 academic year) 
+      completed with Albion Spaho and Erlis Ciko. The biggest challenges were waterproofing the electronics 
+      (we used rigid polyurethane insulation and silicon sealing) and balancing the submarine's 
+      buoyancy—getting the center of gravity right required multiple iterations of the chamber layout. 
+      My role focused on designing and building all the electronic circuits on perfboards, implementing 
+      power regulation with LM7809 and LM7812 voltage regulators, and extensive testing to minimize 
+      electrical noise. We were inspired by DIY Perks' submersible and PeterSripol's magnet fishing ROV, 
+      but SEAORB improves on both with true variable ballast (not preset weights) and full modularity.
     </p>
     <p>
-      NOTE: This is a proof-of-concept prototype built for educational purposes. The glucose monitoring 
-      feature uses indirect correlation methods based on NIR spectroscopy and would require extensive 
-      clinical validation before medical use. The device showed promising results for heart rate and SpO₂ 
-      monitoring (comparable to commercial devices), but glucose readings are experimental. Future 
-      improvements include FDA certification pathways, medical-grade enclosure design, enhanced glucose 
-      detection algorithms with larger datasets, and extended battery life optimization. The device has 
-      potential applications in diabetes management, elderly care monitoring, and telemedicine remote 
-      patient monitoring systems!
+      NOTE: This is a proof-of-concept prototype tested only in controlled dry environments—full 
+      waterproofing and underwater testing would require industrial-grade sealing methods and pressure 
+      testing. The submarine uses hydrodynamic design principles validated in AirShaper CFD simulations, 
+      and follows ISO 19673-19678 standards for remotely controlled watercraft. Future improvements include 
+      wireless communication (currently tethered), better waterproofing with marine-grade enclosures, 
+      GPS positioning for surface navigation, and implementing the planned AI species identification 
+      system using computer vision. The project demonstrates that sophisticated marine research tools 
+      can be built affordably with open-source designs, making underwater exploration accessible to students 
+      and researchers in developing countries!
     </p>
   </div>
 </section>
@@ -572,7 +572,7 @@
     </span>
     <button class="pdf-btn" id="next-page">Next ▶</button>
     <!-- ======== EDIT 4: PDF PATH ======== -->
-    <a class="pixel-btn" href="pulse.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
+    <a class="pixel-btn" href="SEAORB - Your eye under the sea.pdf" download style="margin-left:1rem">⬇ Download PDF</a>
   </div>
   
   <!-- PDF Viewer -->
@@ -587,7 +587,7 @@
 <section id="code" class="block">
   <h2>Source Code</h2>
   <p style="margin-bottom:1rem;">Browse through the project code files.</p>
-  <p> Github is linked below!</p>
+  
   <!-- Code Navigation Controls -->
   <div class="code-controls">
     <button class="code-nav-btn" id="prev-code">◀ Prev</button>
@@ -607,7 +607,6 @@
 <section id="video" class="block">
   <h2>Demo Videos</h2>
   <p style="margin-bottom:1rem;">Watch the project demonstrations.</p>
-  <p>Currently no videos available for this project.</p>
   <!-- Video Navigation Controls -->
   <div class="video-controls">
     <button class="video-nav-btn" id="prev-video">◀ Prev</button>
@@ -629,22 +628,23 @@
 <section id="schematics" class="block">
   <h2>Schematics</h2>
   <p style="margin-bottom:1.5rem;">Circuit diagrams and technical schematics for the project. Click to view or download.</p>
+  <p>Currently there are no schematics or diagrams for this project</p>
   <div class="schematics-grid">
     <!-- ======== EDIT: ADD YOUR SCHEMATICS ======== -->
     
     <!-- Schematic Item 1 -->
     <div class="schematic-item">
-      <img src="schematics/pulse pcb.png" alt="Pulse PCB design" class="schematic-preview">
+      <img src="schematics/SEAORB SCHEMATIC.png" alt="Seaorb Schematic" class="schematic-preview">
       <div class="schematic-title">Power Supply Circuit</div>
-      <a href="schematics/pulse pcb.png" download class="schematic-download">⬇ Download PDF</a>
+      <a href="schematics/SEAORB SCHEMATIC.png" download class="schematic-download">⬇ Download PDF</a>
     </div>
     
     <!-- Schematic Item 2 -->
-    <div class="schematic-item">
-      <img src="schematics/pulse schematic.png" alt="Pulse schematic" class="schematic-preview">
+    <!-- <div class="schematic-item">
+      <img src="schematics/sensor-circuit.png" alt="Sensor Circuit Schematic" class="schematic-preview">
       <div class="schematic-title">Sensor Interface Circuit</div>
-      <a href="schematics/pulse schematic.png" download class="schematic-download">⬇ Download PDF</a>
-    </div>
+      <a href="schematics/sensor-circuit.pdf" download class="schematic-download">⬇ Download PDF</a>
+    </div> -->
     
     <!-- Schematic Item 3 -->
     <!-- <div class="schematic-item">
@@ -661,10 +661,12 @@
   <h2>Links & Resources</h2>
   <ul>
     <!-- ======== EDIT 5: YOUR LINKS ======== -->
-    <li><a href="https://github.com/darti-lila/pulse-engr113/" target="_blank">Project (GitHub)</a></li>
-    <!-- <li><a href="https://www.canva.com/design/DAGpZ-adet0/FMNZKbnq5b2L_LHAfne4IA/" target="_blank">Project presentation (Canva)</a></li> -->
-    <!-- <li><a href="#" target="_blank">Technical specifications</a></li>
+     <p>Currently no additional links available for this project.</p>
+    <!-- <li><a href="https://github.com/YOU/REPO" target="_blank">Source code (GitHub)</a></li>
+    <li><a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">Demo video (YouTube)</a></li>
+    <li><a href="#" target="_blank">Technical specifications</a></li>
     <li><a href="#" target="_blank">Additional resources</a></li> -->
+    <!-- add more <li> lines here -->
   </ul>
 </section>
 
@@ -673,8 +675,8 @@
   <h2>Photos / Screenshots</h2>
   <div class="gallery">
     <!-- ======== EDIT 6: IMAGE PATHS ======== -->
-    <img src="images/pulse image 1.png" alt="Pulse device on table">
-    <img src="images/pulse image 2.png" alt="Pulse server dashboard">
+    <img src="images/seaorb body.jpeg" alt="Seaorb body">
+    <img src="images/seaorb lights on.jpeg" alt="Seaorb lights on">
     <!-- drop more <img> lines here -->
   </div>
 </section>
@@ -688,10 +690,8 @@
       This project was developed with the help of amazing collaborators who contributed their time, skills, and expertise.
     </p>
     <ul>
-      <li><strong>Ashley Benjamin</strong> - Programming</li>
-      <li><strong>Earli Ismaili</strong> - Circuit design</li>
-      <li><strong>Hakan Alex Kucukhuseyin</strong> - Programming</li>
-      <li><strong>Esila Özdemir</strong> - Circuit design</li>
+      <li><strong>Albion Spaho</strong> - 3D design and circuits</li>
+      <li><strong>Erlis Ciko</strong> - Programming</li>
     </ul>
   </div>
 </section>
