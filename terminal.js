@@ -6,16 +6,17 @@ function initTerminal() {
   const commands = {
     help: () => `
 Available commands:
-  help       - Show this help message
-  about      - Learn more about me
-  skills     - Display my technical skills
-  projects   - List all projects
-  contact    - Get contact information
-  clear      - Clear terminal
-  easteregg  - Find a hidden surprise
-  social     - Show social media links
-  theme      - Toggle light/dark theme
-  minimize   - Minimize terminal (or use Ctrl+\`)
+  \nhelp       - Show this help message
+  \nabout      - Learn more about me
+  \nskills     - Display my technical skills
+  \nprojects   - List all projects
+  \ncontact    - Get contact information
+  \nclear      - Clear terminal
+  \ngates      - Obvious secret command
+  \ntransistors - Obvious secret command 2
+  \nsocial     - Show social media links
+  \ntheme      - Toggle light/dark theme
+  \nminimize   - Minimize terminal (or use Ctrl+\`)
     `,
     
     about: () => `
@@ -116,22 +117,40 @@ SOCIAL MEDIA LINKS:
       return 'Terminal minimized. Click header or press Ctrl+` to restore.';
     },
     
-    easteregg: () => `
-    ⠀⠀⠀⠀⠀⣀⣤⣴⣶⣾⣿⣷⣶⣦⣤⣀⠀⠀⠀⠀⠀
-    ⠀⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀
-    ⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀
-    ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
-    ⢸⣿⣿⣿⣿⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⣿⣿⣿⣿⣿⡇
-    ⠘⣿⣿⣿⣿⣦⣤⣀⠀⠀⠀⠀⣀⣤⣴⣿⣿⣿⣿⣿⠃
-    ⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀
-    ⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀
-    ⠀⠀⠀⠀⠀⠈⠉⠛⠛⠿⠿⠿⠿⠛⠛⠉⠀⠀⠀⠀⠀
+    gates: () => `
+Gates
+
+  |-----           \---            \\----
+--|     |        -- |   \        -- ||    \
+  |NAND |O--        |NOR |O--       ||XNOR |O--
+--|     |        -- |   /        -- ||    /
+  |-----           /---            //----
+
+
+  |-----           \---            \\---
+--|     |        -- |   \        -- ||   \
+  | AND |---        | OR |---       ||XOR |---
+--|     |        -- |   /        -- ||   /
+  |-----           /---            //---
+
+    |\          |\
+  --| |O--    --| |---
+    |/          |/
 
     You found the secret! Here's a pixel trophy!
     Achievement Unlocked: Curious Developer
 
+
     Fun fact: This portfolio has ${document.querySelectorAll('.project-card').length} projects!
     `,
+    transistors: () => `
+    FET's & BJT's
+
+   |/-----      | /----       ||-----       ||-----
+---|         ---|           --||->|       --||<-|
+   |\>----      |<\----       ||--|--       ||--|--
+  };
+  `,
   };
   
   // Command history
